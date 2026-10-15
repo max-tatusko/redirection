@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Повернення в прайм – Максим Татусько</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;900&display=swap');
+
+    :root {
+      --dark:      #0E0D0D;
+      --blue-bg:   #0C0B9D;
+      --green-bg:  #0B4425;
+      --purple-bg: #630BC4;
+      --blue-acc:  #6E8CFF;
+      --green-acc: #5FD787;
+      --purple-acc:#C882FF;
+      --cream:     #EBE4D2;
+      --gold:      #C3A25A;
+      --muted:     rgba(235,228,210,0.4);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: var(--dark);
+      color: var(--cream);
+      min-height: 100vh;
+      overflow-x: hidden;
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+
+    #noise-canvas {
+      position: fixed; top: 0; left: 0;
+      pointer-events: none; z-index: 999;
+      opacity: 0.65; mix-blend-mode: soft-light;
+    }
+
+    .watermark {
+      position: fixed; bottom: 24px; left: 0; right: 0;
+      display: flex; justify-content: space-between; padding: 0 24px;
+      font-size: 11px; font-weight: 300; color: var(--muted);
+      letter-spacing: 0.06em; z-index: 100; pointer-events: none;
+    }
+
+    .page { max-width: 680px; margin: 0 auto; padding: 56px 20px 120px; }
+
+    /* HERO */
+    .hero { margin-bottom: 64px; }
+    .hero-eyebrow { font-size: 10px; font-weight: 300; letter-spacing: 0.25em; text-transform: uppercase; color: var(--muted); margin-bottom: 20px; }
+    .hero-title { font-size: clamp(36px, 10vw, 60px); font-weight: 900; letter-spacing: -0.03em; line-height: 0.9; text-transform: uppercase; color: var(--cream); margin-bottom: 24px; }
+    .hero-title span { color: var(--gold); }
+    .hero-sub { font-size: 15px; font-weight: 300; line-height: 1.75; color: rgba(235,228,210,0.75); margin-bottom: 32px; max-width: 560px; }
+    .hero-divider { width: 100%; height: 1px; background: linear-gradient(90deg, var(--muted) 0%, transparent 100%); }
+    .author-row { display: flex; align-items: center; gap: 14px; margin-top: 28px; }
+    .author-circle { width: 52px; height: 52px; border-radius: 50%; overflow: hidden; flex-shrink: 0; border: 2px solid var(--gold); }
+    .author-circle img { width: 100%; height: 100%; object-fit: cover; }
+    .author-row-name { font-size: 13px; font-weight: 600; color: var(--cream); margin-bottom: 2px; }
+    .author-row-role { font-size: 11px; font-weight: 300; color: var(--muted); }
+
+    /* SECTION */
+    .section { margin-bottom: 56px; }
+    .section-label { font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+    .section-title { font-size: clamp(20px, 5vw, 28px); font-weight: 900; letter-spacing: -0.02em; text-transform: uppercase; color: var(--cream); margin-bottom: 20px; line-height: 1.1; }
+    .section-body { font-size: 14px; font-weight: 300; line-height: 1.75; color: rgba(235,228,210,0.75); margin-bottom: 20px; }
+
+    /* STATES */
+    .states { display: flex; flex-direction: column; gap: 2px; margin-bottom: 8px; }
+    .state-card { padding: 22px 24px; background: rgba(235,228,210,0.05); border: 1px solid rgba(235,228,210,0.08); }
+    .state-card:first-child { border-radius: 8px 8px 0 0; }
+    .state-card:last-child { border-radius: 0 0 8px 8px; }
+    .state-num { font-size: 9px; font-weight: 900; letter-spacing: 0.15em; margin-bottom: 10px; }
+    .state-num.blue { color: var(--blue-acc); }
+    .state-num.green { color: var(--green-acc); }
+    .state-num.purple { color: var(--purple-acc); }
+    .state-num.gold { color: var(--gold); }
+    .state-q { font-size: 15px; font-weight: 700; color: var(--cream); margin-bottom: 8px; line-height: 1.4; }
+    .state-body { font-size: 13px; font-weight: 300; color: rgba(235,228,210,0.65); line-height: 1.65; }
+
+    /* HIGHLIGHT */
+    .highlight { padding: 24px; border-radius: 8px; background: rgba(12,11,157,0.2); border: 1px solid rgba(110,140,255,0.2); margin-bottom: 56px; font-size: 15px; font-weight: 400; line-height: 1.7; color: var(--cream); }
+    .highlight strong { font-weight: 700; color: var(--blue-acc); }
+
+    /* METAPHOR */
+    .metaphor { margin-bottom: 56px; }
+    .metaphor-card { padding: 24px; border-radius: 8px; margin-bottom: 10px; }
+    .metaphor-card.water { background: rgba(12,11,157,0.15); border: 1px solid rgba(110,140,255,0.2); }
+    .metaphor-card.ice { background: rgba(99,11,196,0.15); border: 1px solid rgba(200,130,255,0.2); }
+    .metaphor-card.flow { background: rgba(11,68,37,0.2); border: 1px solid rgba(95,215,135,0.2); }
+    .metaphor-icon { font-size: 24px; margin-bottom: 10px; }
+    .metaphor-title { font-size: 14px; font-weight: 700; color: var(--cream); margin-bottom: 8px; }
+    .metaphor-body { font-size: 13px; font-weight: 300; line-height: 1.65; }
+    .metaphor-card.water .metaphor-body { color: rgba(110,140,255,0.85); }
+    .metaphor-card.ice .metaphor-body { color: rgba(200,130,255,0.85); }
+    .metaphor-card.flow .metaphor-body { color: rgba(95,215,135,0.85); }
+
+    /* WORLDS */
+    .worlds { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+    .world { padding: 18px 20px; border-radius: 8px; }
+    .world.blue   { background: rgba(12,11,157,0.25);  border: 1px solid rgba(110,140,255,0.2); }
+    .world.green  { background: rgba(11,68,37,0.25);   border: 1px solid rgba(95,215,135,0.2); }
+    .world.purple { background: rgba(99,11,196,0.25);  border: 1px solid rgba(200,130,255,0.2); }
+    .world-num { font-size: 9px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 6px; }
+    .world.blue .world-num { color: var(--blue-acc); }
+    .world.green .world-num { color: var(--green-acc); }
+    .world.purple .world-num { color: var(--purple-acc); }
+    .world-name-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; flex-wrap: wrap; }
+    .world-name { font-size: 14px; font-weight: 600; color: var(--cream); }
+    .world-sep { font-size: 11px; color: var(--muted); }
+    .world-crisis { font-size: 11px; font-weight: 400; color: var(--cream); opacity: 0.5; }
+    .world-q { font-size: 12px; font-weight: 300; color: var(--muted); font-style: italic; margin-bottom: 8px; }
+    .world-desc { font-size: 12px; font-weight: 300; line-height: 1.6; }
+    .world.blue .world-desc { color: rgba(110,140,255,0.75); }
+    .world.green .world-desc { color: rgba(95,215,135,0.75); }
+    .world.purple .world-desc { color: rgba(200,130,255,0.75); }
+
+    /* SEASONS */
+    .seasons { padding: 24px; border-radius: 8px; border: 1px solid rgba(235,228,210,0.1); margin-bottom: 56px; }
+    .seasons-title { font-size: 15px; font-weight: 700; color: var(--cream); margin-bottom: 16px; }
+    .seasons-body { font-size: 13px; font-weight: 300; color: rgba(235,228,210,0.75); line-height: 1.7; margin-bottom: 16px; }
+    .season-row { display: flex; gap: 8px; align-items: center; padding: 12px 0; border-top: 1px solid rgba(235,228,210,0.06); }
+    .season-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+    .season-text { font-size: 13px; font-weight: 300; color: rgba(235,228,210,0.8); line-height: 1.5; }
+
+    /* ARTIFACTS */
+    .artifacts { padding: 24px; border-radius: 8px; background: rgba(11,68,37,0.15); border: 1px solid rgba(95,215,135,0.2); margin-bottom: 56px; }
+    .artifacts-title { font-size: 15px; font-weight: 700; color: var(--cream); margin-bottom: 12px; }
+    .artifacts-body { font-size: 13px; font-weight: 300; color: rgba(95,215,135,0.85); line-height: 1.7; margin-bottom: 16px; }
+    .artifact-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .artifact-list li { display: flex; gap: 10px; align-items: flex-start; font-size: 13px; font-weight: 300; color: rgba(235,228,210,0.8); line-height: 1.55; }
+    .artifact-list li::before { content: ''; width: 4px; height: 4px; border-radius: 50%; background: var(--green-acc); flex-shrink: 0; margin-top: 7px; }
+
+    /* PRACTICE */
+    .practice { padding: 24px; border-radius: 8px; background: rgba(99,11,196,0.15); border: 1px solid rgba(200,130,255,0.2); margin-bottom: 56px; }
+    .practice-title { font-size: 15px; font-weight: 700; color: var(--cream); margin-bottom: 20px; }
+    .practice-steps { display: flex; flex-direction: column; gap: 18px; }
+    .practice-step { display: flex; gap: 14px; align-items: flex-start; }
+    .p-num { font-size: 11px; font-weight: 900; color: var(--purple-acc); flex-shrink: 0; padding-top: 2px; letter-spacing: 0.05em; }
+    .p-text { font-size: 14px; font-weight: 600; color: var(--cream); margin-bottom: 4px; line-height: 1.4; }
+    .p-sub { font-size: 12px; font-weight: 300; color: rgba(200,130,255,0.75); line-height: 1.5; }
+
+    /* QUOTE */
+    .quote-block { border: 1px solid rgba(235,228,210,0.1); border-radius: 8px; padding: 28px; margin-bottom: 56px; }
+    .quote-bar { width: 32px; height: 2px; background: var(--blue-acc); border-radius: 100px; margin-bottom: 20px; }
+    .quote-text { font-size: 17px; font-weight: 300; line-height: 1.75; color: var(--cream); font-style: italic; margin-bottom: 20px; }
+    .quote-photo-row { display: flex; align-items: center; gap: 12px; }
+    .quote-circle { width: 44px; height: 44px; border-radius: 50%; overflow: hidden; flex-shrink: 0; border: 1px solid rgba(235,228,210,0.2); }
+    .quote-circle img { width: 100%; height: 100%; object-fit: cover; }
+    .quote-name { font-size: 12px; font-weight: 600; color: var(--cream); margin-bottom: 2px; }
+    .quote-role { font-size: 10px; font-weight: 300; color: var(--muted); }
+
+    /* CTA */
+    .cta-section { background: var(--blue-bg); border-radius: 8px; padding: 40px 24px; text-align: center; margin-bottom: 48px; }
+    .cta-label { font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--blue-acc); margin-bottom: 16px; }
+    .cta-title { font-size: clamp(24px, 6vw, 36px); font-weight: 900; letter-spacing: -0.03em; text-transform: uppercase; color: var(--cream); line-height: 1.05; margin-bottom: 14px; }
+    .cta-sub { font-size: 14px; font-weight: 300; color: rgba(235,228,210,0.7); line-height: 1.65; margin-bottom: 28px; }
+    .cta-price { font-size: 13px; font-weight: 600; color: var(--blue-acc); margin-bottom: 24px; letter-spacing: 0.04em; }
+    .cta-btn {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 700;
+      color: var(--dark); background: var(--blue-acc); border: none; border-radius: 100px;
+      padding: 16px 32px; cursor: pointer; text-decoration: none;
+      transition: opacity 0.2s, transform 0.15s; width: 100%;
+    }
+    .cta-btn:active { opacity: 0.8; transform: scale(0.98); }
+
+
+    /* DRAMA BLOCK */
+    .drama-block { padding: 28px 24px; border-radius: 8px; background: rgba(195,162,90,0.08); border: 1px solid rgba(195,162,90,0.2); margin-bottom: 56px; }
+    .drama-block-title { font-size: 13px; font-weight: 600; color: var(--gold); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 16px; }
+    .drama-text { font-size: 15px; font-weight: 300; line-height: 1.8; color: rgba(235,228,210,0.85); }
+    .drama-text strong { font-weight: 700; color: var(--cream); }
+
+    /* ARTIFACTS PERSON */
+    .artifacts-person { padding: 28px 24px; border-radius: 8px; background: rgba(12,11,157,0.15); border: 1px solid rgba(110,140,255,0.15); margin-bottom: 56px; }
+    .artifacts-person-title { font-size: 15px; font-weight: 700; color: var(--cream); margin-bottom: 8px; }
+    .artifacts-person-sub { font-size: 13px; font-weight: 300; color: var(--muted); margin-bottom: 20px; line-height: 1.6; }
+    .artifact-facts { display: flex; flex-direction: column; gap: 12px; }
+    .artifact-fact { display: flex; gap: 12px; align-items: flex-start; }
+    .artifact-fact-num { font-size: 10px; font-weight: 900; color: var(--blue-acc); flex-shrink: 0; padding-top: 3px; letter-spacing: 0.08em; }
+    .artifact-fact-text { font-size: 14px; font-weight: 300; color: rgba(235,228,210,0.85); line-height: 1.6; }
+    .artifact-fact-text strong { font-weight: 600; color: var(--cream); }
+
+    /* EXERCISE EXPANDED */
+    .exercise-block { padding: 0; border-radius: 0; background: transparent; border: 0; margin-bottom: 56px; }
+    .exercise-title { font-size: 15px; font-weight: 700; color: var(--cream); margin-bottom: 8px; }
+    .exercise-sub { font-size: 13px; font-weight: 300; color: rgba(235,228,210,0.65); line-height: 1.65; margin-bottom: 24px; }
+    .exercise-progress { display:flex; justify-content:space-between; gap:12px; align-items:center; margin:0 0 12px; color:var(--muted); font-size:10px; letter-spacing:.16em; text-transform:uppercase; }
+    .exercise-progress strong { color:var(--purple-acc); font-weight:700; }
+    .exercise-progress-track { height:2px; background:rgba(235,228,210,.12); margin-bottom:14px; }
+    .exercise-progress-bar { width:25%; height:100%; background:var(--purple-acc); transition:width .25s ease; }
+    .exercise-steps { display:block; }
+    .exercise-step { padding:24px 20px; border-radius:8px; background:rgba(235,228,210,.035); border:1px solid rgba(235,228,210,.1); }
+    .exercise-step[hidden], .exercise-offer[hidden] { display:none !important; }
+    .exercise-step:nth-child(1){border-top:3px solid var(--blue-acc)}
+    .exercise-step:nth-child(2){border-top:3px solid var(--green-acc)}
+    .exercise-step:nth-child(3){border-top:3px solid var(--purple-acc)}
+    .exercise-step:nth-child(4){border-top:3px solid var(--gold)}
+    .ex-num { font-size: 11px; font-weight: 900; color: var(--purple-acc); flex-shrink: 0; padding-top: 2px; letter-spacing: 0.05em; }
+    .ex-text { font-size: 14px; font-weight: 600; color: var(--cream); margin-bottom: 4px; line-height: 1.4; }
+    .ex-sub { font-size: 12px; font-weight: 300; color: rgba(200,130,255,0.7); line-height: 1.6; }
+    .ex-example { font-size: 12px; font-style: italic; color: rgba(235,228,210,0.45); margin-top: 6px; line-height: 1.5; }
+    .ex-output { font-size: 11px; font-weight: 600; color: rgba(235,228,210,0.78); margin-top: 12px; padding-top: 10px; border-top: 1px solid rgba(235,228,210,0.09); line-height: 1.5; }
+    .exercise-insight { margin-top: 20px; padding: 16px 18px; border-radius: 6px; background: rgba(200,130,255,0.08); border: 1px solid rgba(200,130,255,0.15); font-size: 13px; font-weight: 300; color: rgba(235,228,210,0.75); line-height: 1.65; }
+    .exercise-insight strong { font-weight: 600; color: var(--purple-acc); }
+    .exercise-actions { display:flex; gap:10px; margin-top:18px; }
+    .exercise-nav { min-height:48px; padding:12px 18px; border:1px solid rgba(235,228,210,.2); border-radius:100px; background:transparent; color:var(--cream); font:600 12px 'Montserrat',sans-serif; cursor:pointer; }
+    .exercise-nav.primary { flex:1; color:var(--dark); background:var(--purple-acc); border-color:var(--purple-acc); }
+    .exercise-complete { display:none; margin-top:16px; padding:18px; border-radius:8px; background:rgba(11,68,37,.22); border:1px solid rgba(95,215,135,.25); color:rgba(235,228,210,.82); font-size:13px; line-height:1.7; }
+    .exercise-complete.visible { display:block; }
+    .exercise-offer { padding:28px 24px; margin:-28px 0 56px; border-radius:8px; background:linear-gradient(145deg, #0C0B9D, #17144C); border:1px solid rgba(110,140,255,.32); }
+    .exercise-offer-label { color:var(--blue-acc); font-size:10px; font-weight:600; letter-spacing:.18em; margin-bottom:12px; }
+    .exercise-offer-title { font-size:clamp(23px,6vw,34px); font-weight:900; line-height:1.08; text-transform:uppercase; margin-bottom:14px; }
+    .exercise-offer-copy { color:rgba(235,228,210,.78); font-size:14px; font-weight:300; line-height:1.7; margin-bottom:16px; }
+    .exercise-offer-meta { color:var(--cream); font-size:13px; font-weight:600; margin-bottom:18px; }
+    .exercise-offer-link { display:flex; justify-content:center; align-items:center; min-height:50px; padding:14px 18px; border-radius:100px; background:var(--blue-acc); color:var(--dark); text-decoration:none; text-align:center; font-size:13px; font-weight:700; }
+    .exercise-offer-note { margin-top:14px; color:rgba(235,228,210,.58); font-size:11px; line-height:1.6; }
+
+    /* DUAL CTA */
+    .dual-cta { display: flex; flex-direction: column; gap: 16px; margin-bottom: 48px; }
+    .dual-cta-main { background: var(--green-bg); border-radius: 8px; padding: 36px 24px; text-align: center; border: 1px solid rgba(95,215,135,0.15); }
+    .dual-cta-secondary { background: rgba(12,11,157,0.3); border-radius: 8px; padding: 28px 24px; text-align: center; border: 1px solid rgba(110,140,255,0.2); }
+    .dcta-label { font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 12px; }
+    .dual-cta-main .dcta-label { color: var(--green-acc); }
+    .dual-cta-secondary .dcta-label { color: var(--blue-acc); }
+    .dcta-title { font-size: clamp(22px, 5vw, 30px); font-weight: 900; letter-spacing: -0.02em; text-transform: uppercase; color: var(--cream); line-height: 1.05; margin-bottom: 10px; }
+    .dcta-sub { font-size: 13px; font-weight: 300; color: rgba(235,228,210,0.65); line-height: 1.65; margin-bottom: 16px; }
+    .dcta-price { font-size: 13px; font-weight: 600; margin-bottom: 20px; letter-spacing: 0.04em; }
+    .dual-cta-main .dcta-price { color: var(--green-acc); }
+    .dual-cta-secondary .dcta-price { color: var(--blue-acc); }
+    .dcta-btn {
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 700;
+      border: none; border-radius: 100px; padding: 14px 28px; cursor: pointer;
+      text-decoration: none; transition: opacity 0.2s, transform 0.15s; width: 100%;
+    }
+    .dcta-btn:active { opacity: 0.8; transform: scale(0.98); }
+    .dual-cta-main .dcta-btn { color: var(--dark); background: var(--green-acc); }
+    .dual-cta-secondary .dcta-btn { color: var(--dark); background: var(--blue-acc); }
+
+
+    /* CTA PRYME */
+    .cta-pryme { background: var(--green-bg); border-radius: 8px; padding: 40px 24px; margin-bottom: 48px; border: 1px solid rgba(95,215,135,0.15); }
+    .cta-pryme-label { font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--green-acc); margin-bottom: 16px; }
+    .cta-pryme-title { font-size: clamp(26px, 6vw, 38px); font-weight: 900; letter-spacing: -0.03em; text-transform: uppercase; color: var(--cream); line-height: 1.05; margin-bottom: 14px; }
+    .cta-pryme-sub { font-size: 14px; font-weight: 300; color: rgba(235,228,210,0.7); line-height: 1.7; margin-bottom: 24px; }
+    .cta-pryme-includes { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; padding: 20px; background: rgba(95,215,135,0.07); border-radius: 8px; border: 1px solid rgba(95,215,135,0.15); }
+    .cpi-item { display: flex; gap: 10px; align-items: flex-start; font-size: 13px; font-weight: 300; color: rgba(235,228,210,0.85); line-height: 1.55; }
+    .cpi-item::before { content: ''; width: 4px; height: 4px; border-radius: 50%; background: var(--green-acc); flex-shrink: 0; margin-top: 7px; }
+    .cta-pryme-price { font-size: 14px; font-weight: 600; color: var(--green-acc); margin-bottom: 20px; letter-spacing: 0.04em; text-align: center; }
+    .cta-pryme-btn {
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Montserrat', sans-serif; font-size: 15px; font-weight: 700;
+      color: var(--dark); background: var(--green-acc); border: none; border-radius: 100px;
+      padding: 16px 32px; cursor: pointer; text-decoration: none;
+      transition: opacity 0.2s, transform 0.15s; width: 100%;
+    }
+    .cta-pryme-btn:active { opacity: 0.8; transform: scale(0.98); }
+
+
+    /* PERSONAL STORY */
+    .personal-story { padding: 24px; border-radius: 8px; border-left: 3px solid var(--gold); background: rgba(195,162,90,0.06); margin-bottom: 56px; }
+    .ps-bar { width: 24px; height: 2px; background: var(--gold); border-radius: 100px; margin-bottom: 14px; }
+    .ps-text { font-size: 14px; font-weight: 300; line-height: 1.75; color: rgba(235,228,210,0.8); font-style: italic; }
+
+    /* ARTIFACT TRIGGERS */
+    .artifact-triggers { display: flex; flex-direction: column; gap: 0; }
+    .at-label { font-size: 10px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--green-acc); margin-bottom: 14px; }
+    .at-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+    .at-item { font-size: 13px; font-weight: 300; color: rgba(235,228,210,0.85); line-height: 1.6; padding: 12px 14px; background: rgba(95,215,135,0.06); border-radius: 6px; border-left: 2px solid rgba(95,215,135,0.3); }
+    .at-note { font-size: 12px; font-weight: 400; color: rgba(95,215,135,0.7); line-height: 1.6; font-style: italic; }
+
+    /* BRIDGE BLOCK */
+    .bridge-block { padding: 28px 24px; border-radius: 8px; background: rgba(235,228,210,0.04); border: 1px solid rgba(235,228,210,0.1); margin-bottom: 40px; }
+    .bridge-label { font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+    .bridge-title { font-size: clamp(18px, 4vw, 24px); font-weight: 900; letter-spacing: -0.02em; text-transform: uppercase; color: var(--cream); margin-bottom: 16px; line-height: 1.1; }
+    .bridge-body { font-size: 14px; font-weight: 300; line-height: 1.75; color: rgba(235,228,210,0.7); margin-bottom: 20px; }
+    .bridge-steps { display: flex; flex-direction: column; gap: 12px; }
+    .bs-item { display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 400; color: rgba(235,228,210,0.85); line-height: 1.5; }
+    .bs-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+    .bs-dot.blue { background: var(--blue-acc); }
+    .bs-dot.green { background: var(--green-acc); }
+    .bs-dot.purple { background: var(--purple-acc); }
+    .bs-dot.gold { background: var(--gold); }
+
+    /* CTA QUOTE */
+    .cta-pryme-quote { font-size: 15px; font-weight: 300; font-style: italic; color: rgba(235,228,210,0.75); line-height: 1.6; margin-bottom: 20px; text-align: center; }
+    .cta-pryme-quote span { display: block; font-size: 11px; font-weight: 600; font-style: normal; color: var(--muted); margin-top: 6px; letter-spacing: 0.06em; text-transform: uppercase; }
+
+
+    /* PRYME PROCESS */
+    .pryme-process { display: flex; flex-direction: column; gap: 0; margin-bottom: 24px; }
+    .pp-step { padding: 16px 20px; border-radius: 8px; background: rgba(95,215,135,0.08); border: 1px solid rgba(95,215,135,0.2); }
+    .pp-step-out { background: rgba(95,215,135,0.15); border-color: rgba(95,215,135,0.35); }
+    .pp-step-label { font-size: 10px; font-weight: 900; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(235,228,210,0.45); margin-bottom: 6px; }
+    .pp-step-label.out { color: var(--green-acc); }
+    .pp-step-text { font-size: 13px; font-weight: 300; color: rgba(235,228,210,0.85); line-height: 1.55; }
+    .pp-arrow { text-align: center; font-size: 18px; color: rgba(95,215,135,0.4); padding: 6px 0; }
+    .pp-middle { padding: 20px; border-radius: 8px; background: rgba(95,215,135,0.05); border: 1px solid rgba(95,215,135,0.15); }
+    .pp-middle-title { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--green-acc); margin-bottom: 14px; }
+    .pp-middle-items { display: flex; flex-direction: column; gap: 10px; }
+    .pp-item { font-size: 13px; font-weight: 300; color: rgba(235,228,210,0.8); line-height: 1.55; display: flex; gap: 8px; align-items: flex-start; }
+    .pp-item::before { content: '–'; color: rgba(95,215,135,0.5); flex-shrink: 0; font-weight: 300; }
+
+
+    .cta-pryme-scarcity { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dark); background: var(--green-acc); border-radius: 100px; padding: 5px 14px; margin-bottom: 12px; }
+    .price-old { text-decoration: line-through; opacity: 0.45; font-weight: 300; }
+    .price-new { color: var(--green-acc); font-weight: 300; }
+    .cta-pryme-scarcity-text { font-size: 12px; font-weight: 300; color: rgba(95,215,135,0.6); text-align: center; margin-top: 8px; letter-spacing: 0.02em; }
+    .cta-pryme-hint { font-size: 12px; font-weight: 300; color: rgba(235,228,210,0.5); line-height: 1.65; text-align: center; margin-top: 14px; }
+
+    /* FOOTER */
+    .doc-footer { border-top: 1px solid rgba(235,228,210,0.1); padding-top: 28px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+    .doc-footer-left { font-size: 11px; font-weight: 300; color: var(--muted); }
+    .doc-footer-right { font-size: 11px; font-weight: 600; color: var(--gold); letter-spacing: 0.06em; }
+  </style>
+</head>
+<body>
+
+<canvas id="noise-canvas"></canvas>
+<div class="watermark">
+  <span>@max.tatusko</span>
+  <span>Режисер нових сезонів</span>
+</div>
+
+<div class="page">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-eyebrow">Безкоштовний матеріал · Максим Татусько</div>
+    <div class="hero-title">Повернення<br><span>в прайм</span></div>
+    <div class="hero-sub">Ти пам'ятаєш цей стан. Коли горить, коли хочеться більше, коли відчуваєш себе собою. Він нікуди не зник. Але між тобою і ним – криза переходу. І вона має назву, механіку і вихід.</div>
+    <div class="hero-divider"></div>
+    <div class="author-row">
+      <div class="author-circle"><img src="data:image/jpeg;base64,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" alt="Максим Татусько"></div>
+      <div>
+        <div class="author-row-name">Максим Татусько</div>
+        <div class="author-row-role">Режисер нових сезонів · Автор подкасту «ЩО ДАЛІ?»</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- СТАНИ -->
+  <div class="section">
+    <div class="section-label">Діагностика</div>
+    <div class="section-title">Впізнай себе</div>
+    <div class="states">
+      <div class="state-card">
+        <div class="state-num blue">СТАН 01</div>
+        <div class="state-q">«Щось не так – але я не можу це назвати»</div>
+        <div class="state-body">Зовні все нормально. Але відчуття, що ти не там. Не той. Не так. І ця думка крутиться фоном без конкретної причини.</div>
+      </div>
+      <div class="state-card">
+        <div class="state-num green">СТАН 02</div>
+        <div class="state-q">«Я знаю хто я – але мене бачать інакше»</div>
+        <div class="state-body">Всередині є чіткість. Але назовні це не зчитується. І цей розрив між тим, хто ти є, і тим, як тебе сприймають – вичерпує.</div>
+      </div>
+      <div class="state-card">
+        <div class="state-num purple">СТАН 03</div>
+        <div class="state-q">«Старий образ вже не підходить – нового ще немає»</div>
+        <div class="state-body">Ти переріс. Стара роль не підходить. Але нова ще не знайдена. І в цьому проміжку важко дихати, важко діяти.</div>
+      </div>
+      <div class="state-card">
+        <div class="state-num gold">СТАН 04</div>
+        <div class="state-q">«Я пам'ятаю свій прайм – але не можу туди повернутись»</div>
+        <div class="state-body">Ти пам'ятаєш як це – коли горить, коли хочеться більше, коли відчуваєш себе собою. Але зараз цього нема.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ЧОМУ -->
+  <div class="highlight">
+    Це не слабкість. Це не поломка. Це <strong>криза переходу між сезонами</strong> – і вона має назву, механіку і вихід.
+  </div>
+
+
+  <!-- DRAMA -->
+  <div class="drama-block">
+    <div class="drama-block-title">Що відбувається, якщо залишитись у кризі</div>
+    <div class="drama-text">
+      Коли вода не тече – вона застоюється. І перетворюється в болото.<br><br>
+      Ти починаєш <strong>звикати до відчуття, що щось не так</strong>. Це стає фоном. Потім – нормою. Потім ти вже не пам'ятаєш, яким був у праймі.<br><br>
+      Можливості проходять мимо – бо ти не в тому стані, щоб їх побачити. Люди, які могли б змінити твій сезон, зустрічаються – але ти не в ресурсі, щоб зробити крок.<br><br>
+      І чим довше ти в кризі – тим більший розрив між тим, хто ти є всередині, і тим, як тебе бачить світ. <strong>Шити цей розрив потім боляче.</strong> Набагато боляче, ніж пройти кризу зараз – навмисно, з розумінням механіки.
+    </div>
+  </div>
+
+  <!-- ОСОБИСТА ІСТОРІЯ -->
+  <div class="personal-story">
+    <div class="ps-bar"></div>
+    <div class="ps-text">Я знаю цей стан зсередини. Був момент, коли за два тижні все, що будувалось місяцями – зламалось одночасно. Я тоді не розумів що відбувається і чому. Але саме тоді – з дна тієї кризи – народився метод трьох світів. Тому що мені потрібно було пояснити собі що сталося. І вийти.</div>
+  </div>
+
+  <!-- МЕТАФОРА -->
+  <div class="section">
+    <div class="section-label">Метафора</div>
+    <div class="section-title">Твій внутрішній світ – це вода</div>
+    <div class="section-body">Коли все добре – вода тече вільно. Коли виникає криза – вона замерзає. І ти опиняєшся у льоді: неможливо рухатися, все зупинилось.</div>
+    <div class="metaphor">
+      <div class="metaphor-card water">
+        <div class="metaphor-icon">🌊</div>
+        <div class="metaphor-title">Прайм – вода тече</div>
+        <div class="metaphor-body">Ти в потоці. Думки ясні, дії послідовні, є енергія і напрямок. Внутрішній і зовнішній світи синхронізовані.</div>
+      </div>
+      <div class="metaphor-card ice">
+        <div class="metaphor-icon">🧊</div>
+        <div class="metaphor-title">Криза – вода замерзла</div>
+        <div class="metaphor-body">Все старе вже не працює, а як по-новому ще невідомо. Ти застряг між сезонами. Це і є крига.</div>
+      </div>
+      <div class="metaphor-card flow">
+        <div class="metaphor-icon">💧</div>
+        <div class="metaphor-title">Вихід – лід тане</div>
+        <div class="metaphor-body">Криза – це шпаргалка від Бога на екзамені життя. Вона завжди веде до чогось. Питання в тому – чи ти вмієш це прочитати.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- МЕТОД -->
+  <div class="section">
+    <div class="section-label">Метод трьох світів</div>
+    <div class="section-title">Де саме виник розрив</div>
+    <div class="section-body">Кожна людина існує в трьох вимірах одночасно. Прайм – це коли всі три синхронізовані. Криза – це завжди розсинхрон між ними.</div>
+    <div class="worlds">
+      <div class="world blue">
+        <div class="world-num">Світ 01</div>
+        <div class="world-name-row"><span class="world-name">Внутрішній</span><span class="world-sep">|</span><span class="world-crisis">Криза ідентичності</span></div>
+        <div class="world-q">«Хто я для себе?»</div>
+        <div class="world-desc">Тут живуть думки, спогади, ідеї і твоя ідентичність. Ідентичність незмінна – але її потрібно розкопувати. Коли виникає питання «а хто я взагалі?» – це криза внутрішнього світу.</div>
+      </div>
+      <div class="world green">
+        <div class="world-num">Світ 02</div>
+        <div class="world-name-row"><span class="world-name">Зовнішній</span><span class="world-sep">|</span><span class="world-crisis">Криза особистості</span></div>
+        <div class="world-q">«Хто я для інших?»</div>
+        <div class="world-desc">Тут живуть твої ролі і стосунки. Особистість – це фрагмент ідентичності в певний сезон. Вона змінюється. Коли стара роль більше не підходить – це криза зовнішнього світу.</div>
+      </div>
+      <div class="world purple">
+        <div class="world-num">Світ 03</div>
+        <div class="world-name-row"><span class="world-name">Цифровий</span><span class="world-sep">|</span><span class="world-crisis">Криза персоналіті</span></div>
+        <div class="world-q">«Хто я для незнайомців?»</div>
+        <div class="world-desc">Тут формується твій образ за межами особистого кола. Коли ти є – але тебе не видно або бачать не так – це криза цифрового світу.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- СЕЗОНИ -->
+  <div class="seasons">
+    <div class="seasons-title">Сезони змінюються – і це нормально</div>
+    <div class="seasons-body">Кожен є головним героєм у своєму житті. Сезони тривають від 3 до 12 місяців. В одному сезоні ти займаєшся громадською діяльністю, в іншому – навчаєшся, в третьому – запускаєш проект. Між сезонами завжди є перехід. І перехід – це і є криза.</div>
+    <div class="season-row">
+      <div class="season-dot" style="background:var(--blue-acc);"></div>
+      <div class="season-text">Сезон завершується – старий образ більше не підходить</div>
+    </div>
+    <div class="season-row">
+      <div class="season-dot" style="background:var(--purple-acc);"></div>
+      <div class="season-text">Криза – ти між сезонами, у льоді, без напрямку</div>
+    </div>
+    <div class="season-row">
+      <div class="season-dot" style="background:var(--green-acc);"></div>
+      <div class="season-text">Новий сезон – нова роль, нова енергія, новий прайм</div>
+    </div>
+  </div>
+
+  <!-- АРТЕФАКТИ -->
+  <div class="artifacts">
+    <div class="artifacts-title">Твій капітал вже є – ти просто його не рахуєш</div>
+    <div class="artifacts-body">Артефакти – це беззаперечні докази того, що ти щось зробив, щось вмієш, чогось досяг. Більшість людей накопичує їх роками і не бачить як ресурс – бо звикла.</div>
+    <div class="artifact-triggers">
+      <div class="at-label">Знайди свої – відповідай чесно</div>
+      <div class="at-list">
+        <div class="at-item">Що ти робив, де була конкретна цифра людей? (організовував, виступав, навчав)</div>
+        <div class="at-item">Що ти вмієш, чого не вмів 2 роки тому – і звідки це з'явилось?</div>
+        <div class="at-item">Де тебе взяли на роль, яка здавалась «не для мене»?</div>
+        <div class="at-item">Що ти зробив, від чого інші казали «як тобі вдалось?» – а ти не розумів питання?</div>
+        <div class="at-item">Де ти вперше – і хто про це знає крім тебе?</div>
+      </div>
+      <div class="at-note">Якщо на кожне питання є хоч одна відповідь – у тебе вже є артефакти. Ти просто ще не назвав їх так.</div>
+    </div>
+  </div>
+
+
+  <!-- МОЇ АРТЕФАКТИ -->
+  <div class="section">
+    <div class="section-label">Доказова база</div>
+    <div class="section-title">Чому я можу про це говорити</div>
+    <div class="section-body">Артефакти – це беззаперечні докази. Їх не потрібно пояснювати. Вони або є – або їх немає. Ось мої.</div>
+  </div>
+  <div class="artifacts-person">
+    <div class="artifacts-person-title">Максим Татусько – артефакти</div>
+    <div class="artifacts-person-sub">Це не резюме. Це речі, які говорять самі за себе – і які сформували метод, який я тепер передаю.</div>
+    <div class="artifact-facts">
+      <div class="artifact-fact">
+        <div class="artifact-fact-num">01</div>
+        <div class="artifact-fact-text"><strong>Театр Марії Заньковецької</strong> – менеджер театральних і міжнародних проектів. Є трудова, є бейджик, є 300+ людей, які це підтвердять.</div>
+      </div>
+      <div class="artifact-fact">
+        <div class="artifact-fact-num">02</div>
+        <div class="artifact-fact-text"><strong>Грант від Молодіжного фонду на 100 000 грн</strong> у межах титулу «Львів – Молодіжна столиця Європи 2025». Реалізований проєкт «ЗАКУЛІССЯ»: 200 заявок, 50 переможців, дводенний тренінг у театрі.</div>
+      </div>
+      <div class="artifact-fact">
+        <div class="artifact-fact-num">03</div>
+        <div class="artifact-fact-text"><strong>Понад 50 проєктів для молоді у сфері культури та освіти</strong> – громадська діяльність протягом 8+ років. Два роки менторив і два роки організовував профорієнтаційний табір «Школа лідера» для школярів Львівщини – 80–120 учасників щороку.</div>
+      </div>
+      <div class="artifact-fact">
+        <div class="artifact-fact-num">04</div>
+        <div class="artifact-fact-text"><strong>Автор подкасту «ЩО ДАЛІ?»</strong> – п’ять років напрацювань над філософією методу трьох світів. Уперше представив її широкій аудиторії на майстер-класі «Еволюція особистості»; тепер продовжую цю розмову в подкасті.</div>
+      </div>
+      <div class="artifact-fact">
+        <div class="artifact-fact-num">05</div>
+        <div class="artifact-fact-text"><strong>Фіналіст «Митниця. Нова режисура 2025» у Театрі на Лівому березі в Києві</strong> – режисер вистав і короткометражок. Створив 10+ пісень, які люди знають напам’ять, без жодного релізу за п’ять років.</div>
+      </div>
+      <div class="artifact-fact">
+        <div class="artifact-fact-num">06</div>
+        <div class="artifact-fact-text"><strong>Lenovo · Talent Acquisition</strong> – опрацював 1700+ кандидатів: переглядав CV, проводив інтерв’ю та супроводжував кандидатів у системі рекрутингу. Цей досвід показав, наскільки на сприйняття людини впливають її самопрезентація й те, як вона подає власний досвід.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ПРАКТИКА -->
+  <div class="section">
+    <div class="section-label">Вправа</div>
+    <div class="section-title">Знайди тему<br>нового сезону</div>
+    <div class="section-body">Твій мозок може блокувати відповідь на пряме питання «ЩО ДАЛІ?». Спробуй підійти до нього через людей, які тебе захоплюють. Виділи 15–20 хвилин, відкрий нотатки або візьми аркуш паперу й пройди кроки один за одним. Тут не потрібні правильні відповіді – потрібні твої.</div>
+  </div>
+  <div class="exercise-block">
+    <div class="exercise-title">Люди → теми → новий сезон</div>
+    <div class="exercise-sub">Не аналізуй кожну відповідь надто довго. Записуй перший чесний імпульс. Кроки відкриваються послідовно – дай собі час зробити кожен.</div>
+    <div class="exercise-progress" aria-live="polite"><span>Крок <strong id="exercise-current">01</strong> з 04</span><span id="exercise-progress-label">Список людей</span></div>
+    <div class="exercise-progress-track" aria-hidden="true"><div class="exercise-progress-bar" id="exercise-progress-bar"></div></div>
+    <div class="exercise-steps">
+      <div class="exercise-step" data-exercise-step="0">
+        <div class="ex-num">01</div>
+        <div>
+          <div class="ex-text">Збери список із 10–20 людей, до яких тебе тягне</div>
+          <div class="ex-sub">Це можуть бути знайомі й незнайомі. Хтось, із ким хочеться зблизитися, або людина, за якою цікаво спостерігати. Не фільтруй список і не пояснюй собі вибір.</div>
+          <div class="ex-example">Наприклад: колега з іншої сфери, режисер, підприємець, за яким стежиш, або подруга, яку давно не бачив.</div>
+          <div class="ex-output">На виході: 10–20 імен без самоцензури.</div>
+          <div class="exercise-actions"><button class="exercise-nav primary" type="button" data-next>Список готовий – далі</button></div>
+        </div>
+      </div>
+      <div class="exercise-step" data-exercise-step="1" hidden>
+        <div class="ex-num">02</div>
+        <div>
+          <div class="ex-text">Додай ще п’ять – ніби обмежень не існує</div>
+          <div class="ex-sub">Ким захоплюєшся здалеку? З ким знайомство здається фантастичним? Відомі люди, автори, лідери – тут можна хотіти «неможливого».</div>
+          <div class="ex-example">У моєму списку були Джеймс Кемерон, Біллі Айліш, Крістофер Нолан, Розалія та Рей.</div>
+          <div class="ex-output">На виході: ще п’ять бажань, які зазвичай відсікає внутрішній цензор.</div>
+          <div class="exercise-actions"><button class="exercise-nav" type="button" data-back>Назад</button><button class="exercise-nav primary" type="button" data-next>П’ять імен є – далі</button></div>
+        </div>
+      </div>
+      <div class="exercise-step" data-exercise-step="2" hidden>
+        <div class="ex-num">03</div>
+        <div>
+          <div class="ex-text">Знайди, що об’єднує людей із твого списку</div>
+          <div class="ex-sub">Подивися на імена поруч. Що в них перегукується – сфера, спосіб мислення, сміливість, естетика, вплив? Зазвичай проявляються 2–4 теми.</div>
+          <div class="ex-example">У моєму списку це склалося в режисуру та музику як спосіб створювати образ – і в новий сезон на їхньому перетині.</div>
+          <div class="ex-output">На виході: 2–4 теми, які повторюються в тому, що тебе захоплює.</div>
+          <div class="exercise-actions"><button class="exercise-nav" type="button" data-back>Назад</button><button class="exercise-nav primary" type="button" data-next>Теми бачу – далі</button></div>
+        </div>
+      </div>
+      <div class="exercise-step" data-exercise-step="3" hidden>
+        <div class="ex-num">04</div>
+        <div>
+          <div class="ex-text">Зістав ці теми зі своїм теперішнім життям</div>
+          <div class="ex-sub">Де ця тема вже є у твоїй роботі, проєктах чи стосунках? Де її бракує? Збіг показує ресурс, а розрив – що проситься в наступний сезон.</div>
+          <div class="ex-example">Запиши одну маленьку дію, якою можеш перевірити одну з тем у реальному житті найближчим часом.</div>
+          <div class="ex-output">На виході: одна гіпотеза про свій наступний сезон і перший крок для її перевірки.</div>
+          <div class="exercise-actions"><button class="exercise-nav" type="button" data-back>Назад</button><button class="exercise-nav primary" type="button" data-finish>Перший крок зафіксував(ла) – завершити</button></div>
+        </div>
+      </div>
+    </div>
+    <div class="exercise-complete" id="exercise-complete" tabindex="-1"><strong>Ти пройшов(ла) вправу.</strong> Не поспішай одразу перетворювати висновок на нову професію чи великий план. Зафіксуй тему, перший експеримент і подивись, що відповість реальність. Саме так починається наступний сезон – не з ідеального сценарію, а з чесної перевірки.</div>
+    <div class="exercise-insight">
+      <strong>Чому це працює:</strong> Мозок не відповідає на пряме «чого я хочу» – він блокується. Але через людей і образи він відповідає чесно. Ті, хто тебе захоплює – це дзеркало твоєї власної ідентичності. Ти бачиш в них себе – але в майбутньому сезоні.
+    </div>
+  </div>
+
+  <div id="after-exercise" hidden>
+  <!-- ПРОПОЗИЦІЯ ПІСЛЯ ВИКОНАННЯ ВПРАВИ -->
+  <div class="exercise-offer" id="exercise-offer" hidden>
+    <div class="exercise-offer-label">ТВІЙ НАСТУПНИЙ КРОК · «ЩО ДАЛІ?»</div>
+    <div class="exercise-offer-title">Тему ти вже побачив(ла).<br>Тепер потрібен план.</div>
+    <div class="exercise-offer-copy">Список показав, до чого тебе тягне. Але між «це мене чіпляє» і «ось що я роблю далі» є важливий перехід. На консультації «ЩО ДАЛІ?» ми розберемо твою ситуацію, з’єднаємо минулий досвід із теперішнім запитом і сформулюємо реалістичний наступний крок.</div>
+    <div class="exercise-offer-meta">100 хвилин · €100 · план на наступні 100 днів</div>
+    <a class="exercise-offer-link" href="https://max-tatusko.github.io/redirection/#consultation" target="_blank" rel="noopener noreferrer">Подивитися консультацію «ЩО ДАЛІ?» ↗</a>
+    <div class="exercise-offer-note">Ти – головний герой свого сезону. Моє завдання – не написати за тебе сценарій, а допомогти побачити, які сцени вже є, що в них повторюється і який наступний акт варто перевірити в житті.</div>
+  </div>
+
+  <!-- ЦИТАТА -->
+  <div class="quote-block">
+    <div class="quote-bar"></div>
+    <div class="quote-text">«Аж жити захотіла. Я зрозуміла, що тим самим аналізом, яким я заганяла себе в кризу, можна з неї і вийти. Питання тільки в тому, куди спрямувати погляд.»</div>
+    <div class="quote-photo-row">
+      <div class="quote-circle"><img src="data:image/jpeg;base64,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" alt="Андріана"></div>
+      <div>
+        <div class="quote-name">Андріана</div>
+        <div class="quote-role">Президентка ЛОУП · після консультації «ЩО ДАЛІ?»</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- МІСТОК -->
+  <div class="bridge-block">
+    <div class="bridge-label">Про мій підхід</div>
+    <div class="bridge-title">Ти не починаєш з нуля.<br>Ти збираєш новий сезон.</div>
+    <div class="bridge-body">Я не вірю, що людина має раз і назавжди обрати одну роль – і відрізати все інше. Ми дивимося на тебе як на головного героя власної історії: попередні сезони вже дали досвід, навички, зв’язки й сцени, які можуть стати матеріалом для наступного.<br><br>Моя робота – допомогти побачити сюжетні лінії, що повторюються, і перетворити їх не на красиву теорію, а на напрямок, який можна перевірити реальними діями.</div>
+    <div class="bridge-steps">
+      <div class="bs-item"><span class="bs-dot blue"></span>Розкопуємо хто ти є зараз – і що з цим робити</div>
+      <div class="bs-item"><span class="bs-dot green"></span>Знаходимо артефакти, які ти не бачиш як ресурс</div>
+      <div class="bs-item"><span class="bs-dot purple"></span>Будуємо сценарій першого кроку нового сезону</div>
+      <div class="bs-item"><span class="bs-dot gold"></span>Ти виходиш з документом – всі висновки зафіксовані</div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-pryme" id="next-step">
+    <div class="cta-pryme-label">Якщо запит ширший за один наступний крок</div>
+    <div class="cta-pryme-title">Збери стратегію<br>свого нового сезону.</div>
+    <div class="cta-pryme-sub">«ЩО ДАЛІ?» допомагає прояснити найближчі 100 днів. Якщо ж хочеться скласти цілісну картину – побачити, як досвід, інтереси й суперечності можуть стати напрямком життя та роботи, – на RE→DIRECTION є окремий формат персональної стратегії.</div>
+    <a class="cta-pryme-btn" href="https://max-tatusko.github.io/redirection/#strategy" target="_blank" rel="noopener noreferrer">Дізнатися про стратегію ↗</a>
+    <div class="cta-pryme-hint">Назва цієї вправи лишається «Повернення в прайм». «Прайм» тут – про стан і сезон, до яких можна повертатися; це не назва консультації.</div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="doc-footer">
+    <div class="doc-footer-left">© Максим Татусько · 2026</div>
+    <div class="doc-footer-right">@max.tatusko</div>
+  </div>
+  </div>
+
+</div>
+
+<script>
+  const exercisePanels = [...document.querySelectorAll('[data-exercise-step]')];
+  const exerciseCurrent = document.getElementById('exercise-current');
+  const exerciseLabel = document.getElementById('exercise-progress-label');
+  const exerciseBar = document.getElementById('exercise-progress-bar');
+  const exerciseOffer = document.getElementById('exercise-offer');
+  const exerciseComplete = document.getElementById('exercise-complete');
+  const afterExercise = document.getElementById('after-exercise');
+  const exerciseNames = ['Список людей', 'Без самоцензури', 'Спільні теми', 'Твій наступний крок'];
+  let activeExerciseStep = 0;
+
+  function showExerciseStep(index, focus = true) {
+    activeExerciseStep = index;
+    exercisePanels.forEach((panel, i) => { panel.hidden = i !== index; });
+    exerciseCurrent.textContent = String(index + 1).padStart(2, '0');
+    exerciseLabel.textContent = exerciseNames[index];
+    exerciseBar.style.width = `${((index + 1) / exercisePanels.length) * 100}%`;
+    exerciseOffer.hidden = true;
+    if (focus) document.querySelector('.exercise-block').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  exercisePanels.forEach(panel => {
+    panel.querySelector('[data-next]')?.addEventListener('click', () => showExerciseStep(activeExerciseStep + 1));
+    panel.querySelector('[data-back]')?.addEventListener('click', () => showExerciseStep(activeExerciseStep - 1));
+    panel.querySelector('[data-finish]')?.addEventListener('click', () => {
+      exercisePanels.forEach(item => { item.hidden = true; });
+      exerciseComplete.classList.add('visible');
+      exerciseCurrent.textContent = '✓';
+      exerciseLabel.textContent = 'Вправу завершено';
+      exerciseBar.style.width = '100%';
+      afterExercise.hidden = false;
+      exerciseOffer.hidden = false;
+      exerciseComplete.focus({ preventScroll: true });
+      exerciseComplete.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+  });
+
+  const canvas = document.getElementById('noise-canvas');
+  const ctx = canvas.getContext('2d');
+  function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+  function drawNoise() {
+    const w = canvas.width, h = canvas.height;
+    const imageData = ctx.createImageData(w, h);
+    const data = imageData.data;
+    for (let i = 0; i < data.length; i += 4) {
+      const val = (Math.random() * 255) | 0;
+      data[i] = data[i+1] = data[i+2] = val;
+      data[i+3] = 70;
+    }
+    ctx.putImageData(imageData, 0, 0);
+    requestAnimationFrame(drawNoise);
+  }
+  drawNoise();
+</script>
+</body>
+</html>
