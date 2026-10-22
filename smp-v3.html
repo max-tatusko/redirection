@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0E0D0D">
+<title>Стратегія самопрезентації</title>
+<style>
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;800;900&display=swap");
+:root{--dark:#0E0D0D;--blue-bg:#0C0B9D;--green-bg:#0B4425;--purple-bg:#630BC4;--blue:#6E8CFF;--green:#5FD787;--purple:#C882FF;--cream:#EBE4D2;--gold:#C3A25A;--muted:rgba(235,228,210,.6);--body:rgba(235,228,210,.84);--f:Montserrat,Arial,sans-serif}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth;scroll-padding-top:20px;background:var(--dark)}
+body{margin:0;background:var(--dark);color:var(--cream);font:400 16px/1.75 var(--f);-webkit-font-smoothing:antialiased}
+h1,h2,h3,p{margin:0}::selection{background:var(--blue);color:var(--dark)}
+a:focus-visible,summary:focus-visible{outline:2px solid var(--blue);outline-offset:3px;border-radius:8px}
+.sky{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+main.page{position:relative;z-index:1;width:min(100%,680px);max-width:none;margin:0 auto;padding:0 20px calc(110px + env(safe-area-inset-bottom,0px))}
+/* hero */
+.hero{display:flex;flex-direction:column;justify-content:flex-end;min-height:72svh;padding:calc(env(safe-area-inset-top,0px) + 56px) 0 44px;margin:0 0 20px;border:0;background:none;box-shadow:none;overflow:visible}
+.hero .signal-art{display:none}
+.hero .kicker{margin:0 0 18px;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.hero h1{display:flex;flex-direction:column;gap:14px;margin:0 0 24px;font-weight:900;letter-spacing:-.04em;line-height:.95;text-transform:uppercase;color:var(--cream)}
+.hero h1 span:first-child{font-size:clamp(15px,4.4vw,24px);font-weight:600;letter-spacing:.14em;color:var(--gold)}
+.hero .hero-word{display:block;white-space:nowrap;font-size:clamp(20px,7.2vw,54px);color:var(--cream)}
+.hero h1+p{max-width:30ch;margin:0 0 28px;font-size:clamp(17px,4.6vw,20px);font-weight:400;line-height:1.55;color:var(--body)}
+@keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+.hero .kicker,.hero h1 span,.hero h1+p,.hero .button{animation:rise .9s cubic-bezier(.2,.7,.2,1) both}
+.hero h1 span:nth-child(1){animation-delay:.1s}.hero h1 span:nth-child(2){animation-delay:.22s}.hero h1+p{animation-delay:.4s}.hero .button{animation-delay:.52s}
+.button{display:inline-flex;align-items:center;justify-content:center;min-height:50px;padding:14px 28px;border:0;border-radius:100px;background:var(--blue);color:var(--dark);font:700 13px/1.25 var(--f);text-align:center;text-decoration:none;transition:opacity .2s,transform .2s}
+.button:hover{opacity:.9}.button:active{opacity:.8;transform:scale(.98)}
+.hero .button{align-self:flex-start}
+/* sections */
+section{display:block;margin:0 0 56px;padding:0;border:0}
+.section-head{margin-bottom:20px}
+.kicker{margin:0 0 12px;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--blue)}
+section:nth-of-type(3n+2) .kicker{color:var(--green)}section:nth-of-type(3n) .kicker{color:var(--purple)}
+h2{font-size:clamp(21px,5.6vw,28px);font-weight:800;line-height:1.14;letter-spacing:-.02em;text-transform:uppercase;text-wrap:balance}
+.section-body p{margin:0 0 16px;color:var(--body);text-wrap:pretty}
+.section-body strong{font-weight:700;color:var(--cream)}
+.section-body del{color:var(--muted)}
+.section-body p.em{margin:26px 0 22px;padding-left:16px;border-left:2px solid var(--purple);font-size:clamp(18px,4.8vw,21px);font-weight:600;line-height:1.45;color:var(--cream)}
+.section-body .button{margin-top:10px}
+/* tinted cards (reference system) */
+.pain-point,.role-note,.world-card,.deliverable-card,.process-card,.format-card,.memory-formula,.faq-item{border-radius:8px;border:1px solid rgba(235,228,210,.09);background:rgba(235,228,210,.05)}
+.pain-point{margin:0 0 8px;padding:22px 22px 8px}
+.section-body .pain-point p.em{margin:0 0 8px;padding:0;border:0;font-size:17px;font-weight:700;color:var(--cream)}
+.pain-point p:not(.em){font-size:15px;color:var(--muted)}
+.roles-mosaic{display:grid;gap:8px;margin:0 0 24px}
+.role-note{padding:16px 20px;font-size:15.5px;line-height:1.55;border-left:2px solid var(--blue)}
+.role-note:nth-child(2){border-left-color:var(--green)}.role-note:nth-child(3){border-left-color:var(--purple)}.role-note:nth-child(4){border-left-color:var(--gold)}
+.section-body p.idea-ending{margin-top:26px;font-size:clamp(18px,4.8vw,21px);font-weight:600;line-height:1.45;color:var(--cream)}
+.memory-formula{margin:0 0 24px;padding:24px;background:rgba(99,11,196,.15);border-color:rgba(200,130,255,.2)}
+.formula-heading{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 16px;margin-bottom:18px}
+.formula-heading strong{font-size:28px;font-weight:900;letter-spacing:-.02em;color:var(--purple)}
+.formula-heading span{font-size:13px;line-height:1.5;color:var(--muted)}
+.formula-flow{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
+.formula-term{display:inline-flex;align-items:baseline;gap:8px}
+.formula-term b{font-size:20px;font-weight:900;color:var(--purple)}
+.formula-term span{font-size:13px;font-weight:600;letter-spacing:.04em}
+.formula-term.memory b{color:var(--gold)}
+.formula-op{font-size:18px;font-weight:600;color:var(--muted)}
+/* worlds & lists */
+.world-list,.deliverable-list,.process-list,.format-list{display:grid;gap:10px;margin:22px 0 0}
+.world-card,.deliverable-card,.process-card{padding:22px 22px 8px}
+.world-card{--c:var(--blue);background:rgba(12,11,157,.25);border-color:rgba(110,140,255,.2)}
+.world-card--external{--c:var(--green);background:rgba(11,68,37,.25);border-color:rgba(95,215,135,.2)}
+.world-card--digital{--c:var(--purple);background:rgba(99,11,196,.25);border-color:rgba(200,130,255,.2)}
+.world-card h3,.deliverable-card h3,.process-card h3{margin:0 0 10px;font-size:13px;font-weight:800;letter-spacing:.06em;line-height:1.4;color:var(--c,var(--cream))}
+.world-card p,.deliverable-card p,.process-card p,.format-card p{font-size:15px}
+.world-card p.em,.deliverable-card p.em,.process-card p.em{font-size:17px;border-left-color:var(--c,var(--purple))}
+.deliverable-card:nth-child(3n+1){--c:var(--blue);background:rgba(12,11,157,.18);border-color:rgba(110,140,255,.2)}
+.deliverable-card:nth-child(3n+2){--c:var(--green);background:rgba(11,68,37,.22);border-color:rgba(95,215,135,.2)}
+.deliverable-card:nth-child(3n){--c:var(--purple);background:rgba(99,11,196,.17);border-color:rgba(200,130,255,.2)}
+.section-body p.outcome-summary{padding:20px 22px;border-radius:8px;border:1px solid rgba(110,140,255,.2);background:rgba(12,11,157,.2);font-size:15.5px;font-weight:500;color:var(--cream)}
+.process-card{--c:var(--blue)}.process-card:nth-child(2){--c:var(--green)}.process-card:nth-child(3){--c:var(--purple)}
+.section-body .process-card h3+p.em{margin:0 0 12px;padding:0;border:0;font-size:13px;font-weight:600;color:var(--muted)}
+.checklist{list-style:none;margin:0 0 20px;padding:0;display:grid;gap:9px}
+.checklist li{position:relative;padding-left:16px;font-size:14.5px;line-height:1.6;color:var(--body)}
+.checklist li:before{content:"";position:absolute;left:0;top:.7em;width:4px;height:4px;border-radius:50%;background:var(--green)}
+.proof-section .section-body strong{color:var(--gold)}
+.section-body p.people-proof{margin:26px 0}
+.section-body p.people-turn{margin:26px 0 14px;font-size:clamp(19px,5vw,23px);font-weight:800;line-height:1.3;color:var(--cream)}
+.story-flow{margin:0 0 10px}
+/* formats */
+.section-body p.offer-logic{display:grid;gap:8px;margin:0 0 22px}
+.offer-logic span{padding:12px 16px;border-radius:8px;border:1px solid rgba(235,228,210,.09);background:rgba(235,228,210,.05);font-size:14px;line-height:1.5;color:var(--muted)}
+.offer-logic b{color:var(--cream);font-weight:700}
+.format-card{display:flex;flex-direction:column;padding:28px 24px 24px;scroll-margin-top:20px}
+.format-card h3{margin:0 0 14px;font-size:15px;font-weight:800;line-height:1.35;letter-spacing:.02em;color:var(--cream)}
+.section-body .format-card h3+p:not(.em){margin-bottom:18px;font-size:15px;color:var(--muted)}
+.section-body .format-card h3+p:not(.em) strong{font-size:30px;font-weight:900;letter-spacing:-.02em;color:var(--cream)}
+.section-body .format-card h3+p.em{margin:0 0 18px;padding:0;border:0;font-size:24px;font-weight:900;letter-spacing:-.02em;line-height:1.2}
+.section-body .format-card h3+p.em strong{font-size:15px;font-weight:600;color:var(--muted)}
+.format-card .checklist{margin-bottom:24px}
+.section-body .format-card .button{margin-top:auto;background:transparent;border:1px solid rgba(235,228,210,.25);color:var(--cream)}
+.format-card:nth-child(2){background:linear-gradient(145deg,#0C0B9D,#17144C);border-color:rgba(110,140,255,.32)}
+.format-card:nth-child(2) li:before{background:var(--blue)}
+.section-body .format-card:nth-child(2) .button{background:var(--blue);border-color:var(--blue);color:var(--dark)}
+.format-card:nth-child(3){background:rgba(99,11,196,.18);border-color:rgba(200,130,255,.2)}
+.section-body .format-card:nth-child(3) .button{background:var(--purple);border-color:var(--purple);color:var(--dark)}
+/* faq */
+.faq-item{margin:0 0 8px}
+.faq-item summary{display:flex;justify-content:space-between;gap:16px;padding:18px 20px;list-style:none;cursor:pointer;font-size:15px;font-weight:600;line-height:1.5}
+.faq-item summary::-webkit-details-marker{display:none}
+.faq-item summary:after{content:"+";flex:none;font-size:22px;line-height:1;font-weight:400;color:var(--blue);transition:transform .25s}
+.faq-item[open] summary:after{transform:rotate(45deg)}
+.section-body .faq-item p{margin:0;padding:0 20px 18px;font-size:15px}
+@keyframes open{from{opacity:0;transform:translateY(-6px)}}
+.faq-item[open] p{animation:open .3s ease-out}
+/* final CTA block */
+section:last-of-type{margin:0 0 20px;padding:40px 24px;border-radius:8px;border:1px solid rgba(110,140,255,.3);background:var(--blue-bg);text-align:center}
+section:last-of-type .kicker{color:var(--blue)}
+section:last-of-type .section-body p{color:rgba(235,228,210,.8)}
+.section-body p.final-line{margin:26px 0 18px;padding:0;border:0;font-size:clamp(21px,6vw,30px);font-weight:900;line-height:1.1;letter-spacing:-.02em;text-transform:uppercase;color:var(--cream)}
+section:last-of-type .section-body p.em:not(.final-line){padding:0;border:0;font-size:11px;font-weight:600;letter-spacing:.2em;color:var(--blue)}
+section:last-of-type .button{margin-top:14px;padding-inline:34px}
+.float-cta{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:45;opacity:0;pointer-events:none;transform:translateY(20px);box-shadow:0 12px 32px -10px rgba(0,0,0,.8)}
+.float-cta.on{opacity:1;pointer-events:auto;transform:none}
+@media(min-width:700px){main.page{padding-top:12px}.hero{min-height:68svh}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation:none!important;transition:none!important}}
+
+/* v3 */
+section{--a:var(--blue)}section:nth-of-type(3n+2){--a:var(--green)}section:nth-of-type(3n){--a:var(--purple)}section:last-of-type{--a:var(--purple)}
+.kicker,section:nth-of-type(3n+2) .kicker,section:nth-of-type(3n) .kicker{color:var(--a)}
+section:last-of-type .kicker{color:var(--blue)}
+.section-body p.em{border-left-color:var(--a)}
+.section-body strong{padding:0 2px;margin:0 -2px;background:linear-gradient(transparent 58%,color-mix(in srgb,var(--a) 34%,transparent) 0)}
+section:last-of-type .section-body strong{background:linear-gradient(transparent 58%,rgba(200,130,255,.35) 0)}
+.proof-section .section-body strong{background:none}
+.section-body p.lead{font-size:clamp(18px,4.9vw,20px);line-height:1.6;font-weight:500;color:var(--cream)}
+.section-body p.punch{margin:24px 0;font-size:clamp(19px,5vw,22px);font-weight:700;line-height:1.35;color:var(--cream)}
+.section-body p.ask{margin:22px 0;font-size:clamp(18px,4.8vw,20px);font-weight:600;line-height:1.45;color:var(--a)}
+section:last-of-type .section-body p.ask{color:var(--cream)}
+.memory-formula{padding:26px 24px}
+.formula-heading{display:block;margin-bottom:22px}
+.formula-heading strong{display:block;margin:0;padding:0;background:none;font-size:clamp(44px,14vw,64px);line-height:1;letter-spacing:-.04em}
+.formula-heading strong i{font-style:normal}
+.formula-heading span{display:block;margin-top:10px;font-size:13px;line-height:1.5}
+.formula-flow{display:flex;flex-direction:column;align-items:flex-start;gap:0;padding-top:20px;border-top:1px solid rgba(200,130,255,.22)}
+.formula-term{display:block;--c:var(--blue)}
+.formula-term b{display:none}
+.formula-term span{display:block;font-size:clamp(30px,9.4vw,44px);font-weight:900;line-height:1.12;letter-spacing:-.02em;color:var(--cream)}
+.formula-term span::first-letter{color:var(--c)}
+.formula-flow>:nth-child(3){--c:var(--green)}.formula-flow>:nth-child(5){--c:var(--purple)}.formula-flow>:nth-child(7){--c:var(--gold)}
+.formula-op{padding-left:.15em;font-size:20px;line-height:1.7;font-weight:600;color:var(--muted)}
+</style>
+</head>
+<body>
+<main class="page">
+<header class="hero">
+<div class="signal-art" aria-hidden="true"><svg viewBox="0 0 520 520" role="presentation"><defs><linearGradient id="signalLine" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6e8cff"/><stop offset=".52" stop-color="#c882ff"/><stop offset="1" stop-color="#5fd787"/></linearGradient><radialGradient id="signalGlow"><stop stop-color="#6e8cff" stop-opacity=".22"/><stop offset="1" stop-color="#6e8cff" stop-opacity="0"/></radialGradient></defs><circle cx="260" cy="260" r="242" fill="url(#signalGlow)"/><circle cx="260" cy="260" r="176" fill="none" stroke="#ebe4d2" stroke-opacity=".14"/><circle cx="260" cy="260" r="121" fill="none" stroke="#ebe4d2" stroke-opacity=".1"/><path d="M88 320C142 320 150 198 222 198S309 322 367 322 402 237 445 237" fill="none" stroke="url(#signalLine)" stroke-width="2"/><path d="M88 320C142 320 150 198 222 198S309 322 367 322 402 237 445 237" fill="none" stroke="url(#signalLine)" stroke-opacity=".28" stroke-width="12"/><circle cx="88" cy="320" r="7" fill="#6e8cff"/><circle cx="222" cy="198" r="10" fill="#c882ff"/><circle cx="367" cy="322" r="7" fill="#5fd787"/><circle cx="445" cy="237" r="5" fill="#ebe4d2"/><text x="61" y="353">ТИ</text><text x="181" y="171">ЛЮДИ</text><text x="342" y="359">СПОГАД</text></svg><span>СЕНС — ЕМОЦІЯ — КОНТЕКСТ</span></div>
+<h1><span>СТРАТЕГІЯ</span><span class="hero-word">САМОПРЕЗЕНТАЦІЇ</span></h1>
+<p>Зробити видимим те, ким ти є — для себе, людей поруч і світу.</p>
+<a href="#format" class="button">Обрати формат</a>
+</header>
+<section>
+<div class="kicker">Самопрезентація</div>
+<h2>Між тим, ким ти є і як тебе знають — цілий всесвіт</h2>
+<p>Ти можеш бути значно більшим, ніж про тебе знають.</p>
+<p>У твоїй голові вже є ідеї, <strong>до яких ти доріс</strong>. Речі, які ти хочеш створити. Людина, якою ти поступово стаєш. Можливо, ти вже давно живеш інакше, працюєш інакше, думаєш інакше.</p>
+<p>Але коли тебе просять розповісти про себе, ти <strong>знову говориш те саме</strong>.</p>
+<p>Ту саму посаду. Ті самі досягнення. Ту саму історію, яку розповідав два роки тому.</p>
+<p>Люди продовжують бачити тебе <strong>крізь образ, який колись склався в їхніх головах</strong>. А нові люди взагалі не знають, з якого боку до тебе підійти.</p>
+<p class="em">Між тим, ким ти є, і тим, ким тебе знають, може бути цілий всесвіт.</p>
+<p>Стратегія САМОПРЕЗЕНТАЦІЇ допомагає зробити так, щоб <strong>цей всесвіт став видимим</strong>.</p>
+<a href="#format" class="button">Переглянути формати роботи</a>
+</section>
+<section>
+<div class="kicker">Самопрезентація</div>
+<h2>Знайомо?</h2>
+<p class="em">«Я ніби переріс своє життя, але не розумію, як пояснити це людям».</p>
+<p>Ти вже не хочеш займатися тим, чим займався раніше. У тебе інші інтереси, інші амбіції, інші уявлення про себе. Але як тільки треба пояснити, хто ти тепер, ти починаєш <strong>із того, що робив колись</strong>.</p>
+<p class="em">«Я стільки всього вмію. Чому я маю вибрати щось одне?»</p>
+<p>Ти не хочеш відрізати половину себе, щоб уміститися в одне слово. Ти працюєш на перетині кількох сфер, бачиш зв&#x27;язки, яких інші не помічають, і <strong>не збираєшся вдавати, що всього цього не існує</strong>. Але як пояснити людям цю складність так, щоб вони не заплуталися?</p>
+<p class="em">«Я знаю, що можу більше. Але чому мене не помічають?»</p>
+<p>Ти робиш свою роботу, маєш досвід, реалізуєш проєкти. Та коли з&#x27;являється цікава можливість, <strong>чомусь згадують не про тебе</strong>. Тебе не кличуть туди, куди ти хотів би потрапити. Не рекомендують людям, з якими тобі було б цікаво працювати.</p>
+<p class="em">«Я завжди згадую, що треба було сказати, вже після розмови».</p>
+<p>Ти виходиш зі знайомства, зустрічі чи співбесіди й дорогою додому раптом розумієш: <strong>ось що я мав розповісти</strong>. Ось чому моя робота цікава. Ось чим я можу бути корисним. Ось яке запитання варто було поставити.</p>
+<p class="em">«Я хочу, щоб мене згадували, навіть коли мене немає в кімнаті».</p>
+<p>Щоб хтось почув про новий проєкт і подумав про тебе. Побачив можливість і згадав твоє ім&#x27;я. Зустрів людину, з якою вам варто познайомитися. Щоб тебе рекомендували не тому, що ти вчасно надіслав резюме, а тому, що <strong>люди розуміють, хто ти, що тобі цікаво і де ти можеш бути потрібен</strong>.</p>
+<p>Можливо, ти впізнав себе в одному з цих описів. Можливо, у всіх п&#x27;ятьох.</p>
+<p>У кожному випадку питання приблизно одне: <strong>як зробити так, щоб інші люди бачили більше того, ким ти насправді є?</strong>
+</p>
+</section>
+<section>
+<div class="kicker">Самопрезентація</div>
+<h2>Тобі не потрібно ставати простішим, щоб тебе зрозуміли</h2>
+<p>Можна бути режисером, який розуміється на маркетингу. Людиною з корпоративним досвідом, яка створює музику. Підприємцем, якому цікава філософія. Спеціалістом, що вміє бачити не тільки свою ділянку роботи, а й цілу картину.</p>
+<p>Твої інтереси не зобов&#x27;язані <strong>вміщатися в одну професію</strong>. Твій досвід <strong>не мусить складатися в лінійну історію</strong>. І тобі не потрібно вигадувати собі нову особистість, щоб почати новий етап життя.</p>
+<p>Але є різниця між тим, щоб мати багато граней, і тим, <strong>щоб люди могли їх побачити</strong>.</p>
+<p>Саме тут починається робота.</p>
+<p>Ми шукаємо не одне слово, яке пояснить тебе всьому світові. Ми шукаємо зв&#x27;язки між усім, чим ти є, — щоб різні люди, у різних ситуаціях, могли зрозуміти тебе, запам&#x27;ятати й побачити можливості для взаємодії з тобою.</p>
+<p>Не зменшити тебе до одного визначення. А <strong>зробити твою складність зрозумілою</strong>.</p>
+</section>
+<section>
+<div class="kicker">Самопрезентація</div>
+<h2>Ти легенда. Які легенди ходять про тебе?</h2>
+<p>Уяви, що тебе немає в кімнаті.</p>
+<p>Хтось запитує, кого покликати в новий проєкт. Хтось розповідає про проблему, яку ти міг би розв&#x27;язати. Хтось знайомиться з людиною, якій варто було б із тобою зустрітися.</p>
+<p>Що про тебе згадають?</p>
+<p>Якими словами тебе опишуть? Яку історію розкажуть? Що поставлять тобі в заслугу? З чим асоціюватимуть твоє ім&#x27;я?</p>
+<p>А тепер інше запитання: а що ти хотів би, щоб вони розповідали?</p>
+<p>Не йдеться про те, щоб контролювати чужі думки чи вигадувати собі легенду, за якою нічого немає. Йдеться про те, щоб <strong>свідомо будувати</strong> зв&#x27;язок між тим, ким ти є, тим, що ти робиш, і тим, що люди про тебе пам&#x27;ятають.</p>
+<p>Ти вже залишаєш по собі враження. Навіть коли нічого спеціально для цього не робиш.</p>
+<p>Питання в тому, чи подобається тобі те, яке саме.</p>
+</section>
+<section>
+<div class="kicker">Самопрезентація</div>
+<h2>Як зробити так, щоб тебе згадували?</h2>
+<p>Люди запам&#x27;ятовують не лише інформацію. Вони запам&#x27;ятовують <strong>відчуття, образи, історії, деталі</strong>. Музику, яка грала в потрібний момент. Фразу, яку неможливо забути. Колір, запах, інтонацію. Дивний збіг, який чомусь став символом людини.</p>
+<p>Уяви, що хтось чує назву <strong>«ЩО ДАЛІ?»</strong> — і згадує тебе. Що твоя пісня стає для когось не просто мелодією, а частиною історії, пов&#x27;язаної з тобою. Що певний кадр, фраза, знак питання чи навіть випадкова деталь викликають у людини спогад про тебе.</p>
+<p>Ти можеш стати людиною, з якою асоціюється певна ідея, відчуття, тема чи досвід. І коли ця тема з&#x27;явиться в розмові, хтось згадає саме про тебе.</p>
+<p>Це не випадкові асоціації. <strong>Їх можна досліджувати, знаходити й вибудовувати</strong>.</p>
+<p>Я працюю з тим, як <strong>сенс, емоція та контекст перетворюються на спогад</strong>.</p>
+<p class="em">СЕКС</p>
+<p class="em">СЕНС + ЕМОЦІЯ + КОНТЕКСТ = СПОГАДИ</p>
+<p>Ми шукаємо твої <strong>образи, фрази, історії, звуки, візуальні деталі</strong> й інші асоціації, які природно виростають із твоєї особистості. А потім думаємо, як вплести їх у твоє спілкування, роботу, контент і повсякденне життя.</p>
+<p>Не для того, щоб стати людиною, яку всі впізнають на вулиці.</p>
+<p>А для того, щоб у потрібний момент люди згадували саме про тебе.</p>
+</section>
+<section>
+<div class="kicker">Самопрезентація</div>
+<h2>Три світи твоєї САМОПРЕЗЕНТАЦІЇ</h2>
+<p>Ти не одна людина для всіх ситуацій. І самопрезентація не закінчується на тому, як ти представляєшся незнайомцям.</p>
+<h3>ВНУТРІШНІЙ СВІТ</h3>
+<p class="em">Хто ти для себе?</p>
+<p>Якими словами ти описуєш себе? Які ролі давно стали затісними? Що ти продовжуєш розповідати про себе за звичкою, хоча вже давно в це не віриш?</p>
+<p>Ми досліджуємо твій досвід, інтереси, цінності, амбіції й суперечності. Знаходимо закономірності, які ти сам міг не помічати, і формуємо розуміння того, <strong>що саме ти хочеш винести у світ</strong>.</p>
+<p><strong>Не потрібно вигадувати себе заново</strong>. Потрібно побачити, що в тобі вже є, — і вирішити, що з цього має вийти на перший план.</p>
+<h3>ЗОВНІШНІЙ СВІТ</h3>
+<p class="em">Хто ти для людей, які тебе вже знають?</p>
+<p>Для друзів ти можеш залишатися тією самою людиною, якою був п&#x27;ять років тому. Колеги можуть знати лише твою професійну роль. Родина — пам&#x27;ятати про рішення, яке ти давно переріс.</p>
+<p>Як розповісти їм про зміни? Як пояснити, що тебе тепер цікавить, куди ти рухаєшся і якої підтримки потребуєш? Як показати нові грані, не відмовляючись від спільної історії?</p>
+<p>Ми шукаємо <strong>слова й способи комунікації</strong> для різних стосунків і ситуацій. Щоб важливі для тебе люди мали шанс побачити те, чого раніше не помічали.</p>
+<h3>ЦИФРОВИЙ СВІТ</h3>
+<p class="em">Хто ти для тих, хто ще не знайомий із тобою?</p>
+<p>Що людина зрозуміє про тебе після першої зустрічі? Що побачить, коли введе твоє ім&#x27;я в пошук? Яке враження складеться з твого профілю, дописів, фотографій, відео, музики, публічних виступів?</p>
+<p>Ми працюємо з тим, як ти представляєшся, про що говориш, що показуєш і які асоціації створюєш. Визначаємо, які матеріали варто опублікувати, які історії розповісти, що винести в закріплені дописи й актуальні сторіс.</p>
+<p>Цифрове представлення може показувати лише частину тебе. А може створювати образ, який <strong>не збігається з тим, як ти поводишся в реальному житті</strong>.</p>
+<p class="em">Мета — зменшити розрив між тим, ким ти є, як тебе бачать знайомі та яке враження про тебе складають люди, які ще не знають тебе особисто.</p>
+</section>
+<section>
+<div class="kicker">Самопрезентація</div>
+<h2>Що ти отримаєш у результаті?</h2>
+<p>Не просто розуміння себе. І не черговий документ, який приємно перечитати, але незрозуміло, що з ним робити.</p>
+<p>Ти отримаєш <strong>стратегію, з якою можна працювати в реальному житті</strong>.</p>
+<h3>ПЛАН КОНТЕНТУ</h3>
+<p>Ти знатимеш, <strong>що публікувати, на яких платформах і навіщо</strong>.</p>
+<p>Не абстрактне «треба більше проявлятися», а конкретний напрямок: які теми розкривати, які історії розповідати, що показувати в дописах, відео та сторіс і як пов&#x27;язувати контент із тим, що ти хочеш донести про себе.</p>
+<h3>СЛОВА ДЛЯ ЛЮДЕЙ, ЯКІ ВЖЕ ТЕБЕ ЗНАЮТЬ</h3>
+<p>Що розповісти друзям, знайомим, колегам і близьким? Як пояснити, що тебе тепер цікавить, куди ти рухаєшся і в чому можеш бути корисним?</p>
+<p>Ми визначимо, <strong>як говорити про зміни, нові інтереси й плани</strong> так, щоб люди могли зрозуміти тебе теперішнього, а не лише пам&#x27;ятати твою попередню версію.</p>
+<h3>ФРАЗИ ДЛЯ САМОПРЕЗЕНТАЦІЇ</h3>
+<p>Ти <strong>матимеш конкретні формулювання</strong>, які можна запам&#x27;ятати й використовувати в реальних розмовах.</p>
+<p>Як представитися людині, з якою щойно познайомився? Як пояснити, чим ти займаєшся, у чому твоя користь і що тобі цікаво робити далі? Як розповісти про свою роботу так, щоб розмова не закінчувалася на назві посади?</p>
+<p>Ми підготуємо фрази для знайомств, зустрічей, співбесід, професійних розмов і презентації власних проєктів.</p>
+<h3>ТВОЇ АСОЦІАЦІЇ</h3>
+<p>Ми визначимо, <strong>з чим ти хочеш асоціюватися</strong> і що люди мають згадувати, коли чують твоє ім&#x27;я.</p>
+<p>Це можуть бути теми, образи, слова, історії, візуальні деталі, звуки чи характерні способи комунікації. Ми розберемося, які з них відповідають тобі й <strong>як саме вибудовувати ці асоціації</strong> через контент, розмови, поведінку та твою присутність у різних середовищах.</p>
+<h3>СТРАТЕГІЯ ТРЬОХ СВІТІВ</h3>
+<p>Ми узгодимо три частини твоєї самопрезентації:</p>
+<ul class="checklist">
+<li>
+<strong>Внутрішній світ</strong> — як ти розумієш себе і що хочеш донести.</li>
+<li>
+<strong>Зовнішній світ</strong> — як говорити про себе з людьми, які тебе вже знають.</li>
+<li>
+<strong>Цифровий світ</strong> — як представляти себе людям, які знаходять тебе онлайн.</li>
+</ul>
+<p>Твоя самопрезентація не повинна бути трьома різними версіями тебе. Вони мають доповнювати одна одну.</p>
+<h3>НАПРЯМОК НАСТУПНОГО ЕТАПУ</h3>
+<p>Ми подивимося на твій попередній досвід, рішення, проєкти й навички та знайдемо зв&#x27;язки з тим, куди ти хочеш рухатися.</p>
+<p>Ти краще розумітимеш, що варто показувати вже зараз, як використовувати те, що ти вже зробив, і які кроки допоможуть людям побачити в тобі нові можливості.</p>
+<p class="em">Твоя стратегія не має залишитися на сайті, у нотатках чи в голові. Вона має почати працювати в житті.</p>
+</section>
+<section>
+<div class="kicker">Самопрезентація</div>
+<h2>Усе приходить через людей. І тобі є що їм розповісти</h2>
+<p><strong>Гроші на проєкт приходять від людей</strong>. Запрошення надсилають люди. На роботу обирають люди. Нові знайомства приводять до інших знайомств. Хтось рекомендує тебе, коли тебе немає поруч. Хтось згадує твоє ім&#x27;я, коли з&#x27;являється можливість, яка тобі підходить.</p>
+<p>Самопрезентація впливає на те, до яких проєктів ти долучаєшся, куди тебе запрошують, із ким ти знайомишся, які люди зводять тебе між собою і які можливості стають для тебе доступними.</p>
+<p>Це стосується не лише роботи. Це також вечірки, подорожі, спільноти, творчі колаборації, дружба й середовища, у яких ти опиняєшся.</p>
+<p>Іноді можливість проходить повз тебе <strong>не тому, що ти недостатньо талановитий чи не маєш потрібного досвіду</strong>. Іноді інша людина просто змогла <strong>зрозуміліше показати, що вона може запропонувати</strong>, чого прагне й чому саме її варто запросити.</p>
+<p class="em">Твоє CV — теж самопрезентація. Твоя розповідь про власний проєкт — самопрезентація. Перша розмова з людиною, яка може змінити твій наступний рік, — теж.</p>
+<p>Кожного разу ти представляєш свою версію минулого, показуєш своє теперішнє й даєш іншим зрозуміти, яке майбутнє хочеш побудувати.</p>
+<p>Але з чого почати цю історію?</p>
+<p>Можливо, ти колись організував подію, на яку ніхто не вірив, що прийдуть люди. Витягнув складний проєкт. Допоміг комусь розібратися з проблемою, яку інші не могли вирішити. Самостійно навчився того, що тепер здається тобі буденним. Познайомив між собою людей, які згодом створили щось разом.</p>
+<p>Можливо, ти пережив зміну професії, переїзд, кризу або початок, коли в тебе не було нічого, крім ідеї. А може, ти маєш досвід, який здається тобі надто звичайним, щоб про нього розповідати.</p>
+<p>Але саме такі речі можуть показати, як ти думаєш, що вмієш, що для тебе важливо й чим ти можеш бути корисним іншим.</p>
+<p><strong>Це твої артефакти</strong> — конкретні історії, рішення, проєкти, навички й моменти, з яких складається твій досвід. Вони вже існують. <strong>Тобі не потрібно вигадувати собі нову біографію</strong> чи приписувати собі те, чого не було.</p>
+<p>Потрібно побачити зв&#x27;язки між тим, що ти вже зробив, тим, ким став, і тим, куди хочеш рухатися.</p>
+<p class="em">Самопрезентація допомагає перетворити минуле не просто на список того, що з тобою сталося, а на ресурс для твого майбутнього.</p>
+<p>Якщо ти сам не визначиш, як розповідати про свій досвід і куди хочеш рухатися, <strong>люди все одно складатимуть про тебе враження</strong> — із того, що ти сказав, що показав і що встигли про тебе почути.</p>
+<p>Питання в тому, чи допомагає це враження тобі опинитися там, де ти хочеш бути.</p>
+</section>
+<section>
+<div class="kicker">Самопрезентація</div>
+<h2>Як ми працюємо</h2>
+<p>Я не починаю з питання «Який у тебе особистий бренд?».</p>
+<p>Я починаю з розмови.</p>
+<h3>ЗУСТРІЧ ПЕРША — ДОСЛІДЖЕННЯ</h3>
+<p class="em">Приблизно дві години.</p>
+<p>Ми говоримо про твій досвід, людей, які тебе сформували, речі, якими ти захоплюєшся, ситуації, які тебе змінили, і майбутнє, якого ти хочеш. Я ставлю запитання, які іноді здаються не пов&#x27;язаними між собою.</p>
+<p>Ким ти захоплювався в дитинстві? Що ніколи не погодишся робити? Які вчинки не можеш пробачити? Яку суперсилу хотів би мати? Що люди про тебе не розуміють? Які історії ти розповідаєш знову й знову?</p>
+<p>У відповідях часто ховається більше, ніж здається на перший погляд.</p>
+<p>Я слухаю, зіставляю, помічаю повторювані мотиви й зв&#x27;язки. Ми не намагаємося за одну зустріч вигадати красиву версію тебе — <strong>ми збираємо матеріал, із якого можна побудувати щось справжнє</strong>.</p>
+<h3>МІЖ ЗУСТРІЧАМИ — СИНТЕЗ</h3>
+<p class="em">Приблизно два тижні.</p>
+<p>Я працюю з тим, що почув і помітив. Шукаю закономірності, формулюю гіпотези, зіставляю різні частини твоєї історії, продумую спосіб представити тебе в різних ситуаціях.</p>
+<p>Те, що спочатку здавалося набором різних інтересів, досвіду й випадкових історій, поступово набуває структури.</p>
+<p>Я не просто переповідаю тобі твої відповіді. Я <strong>готую персональну стратегію</strong>, яку можна застосовувати в комунікації, роботі, публічності й повсякденному житті.</p>
+<h3>ЗУСТРІЧ ДРУГА — ПРЕЗЕНТАЦІЯ СТРАТЕГІЇ</h3>
+<p class="em">Приблизно дві години.</p>
+<p>Я презентую результати роботи: що вдалося побачити, які зв&#x27;язки ми знайшли, як можна представити тебе різним людям і що варто змінити у своїй комунікації.</p>
+<p>Ми обговорюємо формулювання, конкретні ситуації, цифрову присутність, асоціації й подальші кроки.</p>
+<p><strong>Ти не мусиш погоджуватися з кожним словом без роздумів</strong>. Це твоя історія, твоє життя і твій напрямок. Моє завдання — допомогти побачити можливості, які можна перетворити на дію.</p>
+<p class="em">Дві розмови. Два тижні роботи між ними. Стратегія, побудована навколо тебе.</p>
+</section>
+<section>
+<div class="kicker">Самопрезентація</div>
+<h2>Чому я?</h2>
+<p>Я працюю на <strong>перетині режисури, маркетингу та кризових змін</strong>.</p>
+<p>Театр навчив мене <strong>бачити драматургію</strong>: що відбувається з героєм, чого він хоче, що йому заважає і що має змінитися, аби історія рушила далі.</p>
+<p>Маркетинг навчив <strong>думати про сприйняття</strong>: що люди помічають, як інтерпретують побачене, що запам&#x27;ятовують і чому обирають одне замість іншого.</p>
+<p>Робота з людьми й командами навчила мене, що <strong>за професійними ролями завжди є конкретні люди</strong> — з досвідом, суперечностями, амбіціями й тим, що вони ще не встигли про себе розповісти.</p>
+<p>Я створював театральні проєкти, працював із молодіжними спільнотами, реалізовував проєкти в культурному середовищі, писав музику й працював у міжнародній корпорації. У кожному з цих світів потрібно було по-різному пояснювати, хто ти, що робиш і навіщо це комусь.</p>
+<p>Мене цікавить, як людина може <strong>залишатися собою в різних середовищах</strong> — і водночас знаходити слова, образи та способи комунікації, завдяки яким її починають краще розуміти.</p>
+<p>Тому я не розглядаю самопрезентацію як оформлення профілю чи написання короткої біографії.</p>
+<p>Для мене <strong>це робота з історією людини</strong>: її змістом, формою, контекстом і тим, що залишається в пам&#x27;яті інших.</p>
+</section>
+<section>
+<div class="kicker">Самопрезентація</div>
+<h2>Обери формат</h2>
+<h3>КОНСУЛЬТАЦІЯ</h3>
+<p>
+<strong>€100</strong> · <del>€150</del>
+</p>
+<p>Коли є конкретне питання, складна ситуація або рішення, яке потрібно розібрати.</p>
+<p>Ми зосереджуємося на твоєму запиті, досліджуємо можливі підходи й визначаємо наступні кроки.</p>
+<p>Для тих, кому потрібна точкова робота без повного процесу створення стратегії.</p>
+<a href="#format" class="button">Записатися на консультацію</a>
+<h3>СТРАТЕГІЯ САМОПРЕЗЕНТАЦІЇ</h3>
+<p>
+<strong>€300</strong> · <del>€450</del>
+</p>
+<p>Персональна робота над тим, як ти розумієш себе, представляєшся людям і залишаєшся в їхній пам&#x27;яті.</p>
+<ul class="checklist">
+<li>Перша зустріч — приблизно 2 години.</li>
+<li>Індивідуальна аналітична робота протягом приблизно двох тижнів.</li>
+<li>Друга зустріч — приблизно 2 години.</li>
+<li>Стратегія САМОПРЕЗЕНТАЦІЇ для внутрішнього, зовнішнього й цифрового світів.</li>
+<li>Конкретні формулювання для реальних розмов.</li>
+<li>Розуміння того, що розповідати людям, які вже тебе знають.</li>
+<li>План контенту: що публікувати й на яких платформах.</li>
+<li>Система асоціацій і розуміння, як їх вибудовувати.</li>
+<li>Напрямок наступного етапу й способи використовувати власний досвід для майбутнього.</li>
+</ul>
+<p>Для тих, хто хоче переосмислити те, як представляє себе світу, і перейти від розуміння до конкретних змін.</p>
+<a href="#format" class="button">Обрати стратегію</a>
+<h3>МЕНТОРСТВО</h3>
+<p class="em">€1200<strong> · <del>€1700</del> · </strong>6 тижнів</p>
+<p>Коли недостатньо зрозуміти, куди рухатися, — потрібно пройти цей шлях і втілити зміни в життя.</p>
+<p>Шість тижнів роботи з регулярними стратегічними зустрічами, розбором рішень і супроводом у процесі реалізації.</p>
+<p>Ми працюємо з внутрішнім розумінням себе, взаємодією з людьми й цифровою присутністю, поступово перетворюючи стратегію на реальні дії.</p>
+<p>Для тих, хто хоче не просто побачити новий напрямок, а почати ним рухатися.</p>
+<a href="#format" class="button">Обговорити менторство</a>
+</section>
+<section>
+<div class="kicker">Самопрезентація</div>
+<h2>Я — результат власної САМОПРЕЗЕНТАЦІЇ</h2>
+<p>Я став фіналістом конкурсу <strong>«Митниця. Нова режисура»</strong> в Театрі на Лівому березі в Києві, бо <strong>презентував власне бачення режисури</strong>.</p>
+<p>Я представив ідею проєкту <strong>«ЗАКУЛІССЯ»</strong>, <strong>отримав грант</strong> і реалізував дводенний офлайн-інтенсив у театрі. Це стало можливим не лише тому, що в мене була ідея, а й тому, що я зміг донести її цінність і пояснити, чому варто дати їй шанс.</p>
+<p>Завдяки самопрезентації я отримав запрошення до <strong>Lenovo</strong>. А в нових середовищах я знову й знову знаходив людей, із якими виникали спільні проєкти, знайомства та можливості.</p>
+<p>Це різні історії, але <strong>механізм у них спільний</strong>: я показував, хто я, що вмію, як бачу світ і що хочу створити. І люди могли побачити в цьому щось, до чого їм хотілося долучитися.</p>
+<p><strong>Я не вигадував собі іншу біографію</strong>. Я вчився представляти власний досвід, бачення й ідеї так, щоб інші люди могли зрозуміти їхню цінність.</p>
+<p>Саме з цим я допомагаю працювати й іншим.</p>
+</section>
+<section>
+<div class="kicker">Самопрезентація</div>
+<h2>Часті запитання</h2>
+<h3>Мені потрібно розвивати особистий бренд?</h3>
+<p>Не обов&#x27;язково. Тобі може бути потрібна зрозуміліша професійна комунікація, новий напрямок кар&#x27;єри, підготовка до змін, більше можливостей для співпраці або просто спосіб пояснити людям, ким ти став. Стратегія САМОПРЕЗЕНТАЦІЇ працює з цим <strong>ширше, ніж лише з публічним образом</strong>.</p>
+<h3>А якщо я сам не знаю, ким хочу бути?</h3>
+<p><strong>Тоді це теж частина роботи</strong>. Не потрібно приходити з готовою відповіддю. Досвід, інтереси й бажання можуть здаватися суперечливими, але з них можна почати дослідження. Водночас стратегія не є обіцянкою вирішити всі життєві питання за дві зустрічі.</p>
+<h3>А якщо я не хочу вести соціальні мережі?</h3>
+<p>Соціальні мережі — <strong>лише одна з можливих точок контакту</strong>. Самопрезентація відбувається на роботі, у знайомствах, розмовах, рекомендаціях і спільних проєктах. Ми працюємо з тими ситуаціями, які важливі саме для тебе.</p>
+<h3>Це психологічна консультація?</h3>
+<p>Ні. Ми можемо торкатися особистих історій, цінностей і внутрішніх суперечностей, адже без цього складно зрозуміти людину. Але мета роботи — <strong>створити стратегію САМОПРЕЗЕНТАЦІЇ</strong>: як говорити про себе, як взаємодіяти з різними людьми й як зробити свій досвід зрозумілішим для світу.</p>
+<h3>Що, якщо я маю багато різних інтересів і досвіду?</h3>
+<p><strong>Тобі не потрібно відмовлятися від частини себе</strong> заради простого опису. Ми шукаємо зв&#x27;язки між твоїми інтересами й досвідом, щоб вони складалися в зрозумілу картину, а не виглядали випадковим переліком.</p>
+</section>
+<section>
+<div class="kicker">Самопрезентація</div>
+<h2>Фінал</h2>
+<p>Я вірю, що твій кінець світу може стати початком нового всесвіту.</p>
+<p>Іноді старий спосіб життя перестає працювати раніше, ніж ти знаходиш слова для нового. Іноді ти вже готовий до змін, але продовжуєш представляти себе так, ніби нічого не сталося. Іноді навколо тебе є можливості, яких ти ще не бачиш, — просто тому, що люди не знають, що ти можеш їм запропонувати.</p>
+<p>Тобі не потрібно чекати, поки хтось випадково помітить усі твої грані.</p>
+<p>Можна почати розповідати свою історію інакше. Знайти слова, які відповідають тобі тепер. <strong>Показати те, що раніше залишалося за кадром</strong>. <strong>Побудувати нові асоціації</strong>. Зробити крок до людей, проєктів і можливостей, які відповідають тому, куди ти рухаєшся.</p>
+<p>Твоя історія вже відбувається.</p>
+<p class="em">Питання в тому, яку її версію побачить світ.</p>
+<p class="em">СТРАТЕГІЯ САМОПРЕЗЕНТАЦІЇ</p>
+<a href="#format" class="button">Почати з себе</a>
+</section>
+</main>
+<script>
+  const main=document.querySelector('main.page');
+  const sectionByTitle=(title)=>[...main.querySelectorAll(':scope > section')].find(s=>s.querySelector('h2')?.textContent.trim()===title);
+  const proof=sectionByTitle('Я — результат власної САМОПРЕЗЕНТАЦІЇ');
+  const offersFirst=sectionByTitle('Обери формат');
+  if(proof&&offersFirst)main.insertBefore(proof,offersFirst);
+  const offersIntro=offersFirst?.querySelector('h2');
+  if(offersIntro&&!offersFirst.querySelector('.offer-logic')){const logic=document.createElement('p');logic.className='offer-logic';logic.innerHTML='<span><b>Розібрати ситуацію</b> — консультація</span><span><b>Зібрати стратегію</b> — персональна робота</span><span><b>Втілити зміни</b> — менторство</span>';offersIntro.after(logic);}
+  const results=sectionByTitle('Що ти отримаєш у результаті?');
+  if(results&&!results.querySelector('.outcome-summary')){const summary=document.createElement('p');summary.className='outcome-summary';summary.textContent='На виході — не лише ясність, а конкретні опори для дії: слова для розмов, план контенту, система асоціацій і напрямок наступного етапу.';results.querySelector('h2')?.after(summary);}
+  const sections=[...document.querySelectorAll('main>section')];
+  sections.find(s=>s.querySelector('h2')?.textContent.includes('Я — результат'))?.classList.add('proof-section');
+  const labels=[['Між тим, ким ти є','Розрив між тобою і світом'],['Знайомо?','Можливо, ти впізнав себе'],['Тобі не потрібно','Твоя складність — твоя сила'],['Ти легенда','Те, що люди пам’ятають'],['Як зробити так','Сенс стає спогадом'],['Три світи','Твоя самопрезентація'],['Що ти отримаєш','Стратегія в дії'],['Усе приходить','Твій досвід — ресурс'],['Як ми працюємо','Від розмови до стратегії'],['Чому я?','Мій підхід'],['Обери формат','Формати роботи'],['Я — результат','Особистий досвід'],['Часті запитання','Коротко про важливе'],['Фінал','Твій наступний крок']];
+  sections.forEach((section,i)=>{const h=section.querySelector('h2');if(!h)return;const kicker=section.querySelector('.kicker');const entry=labels.find(([needle])=>h.textContent.includes(needle));if(kicker&&entry)kicker.textContent=entry[1];if(h.textContent.includes('Обери формат'))section.id='format';});
+  function groupByHeading(section,selector,className,containerClass){
+    const headings=[...section.querySelectorAll(`:scope > ${selector}`)];if(!headings.length)return;
+    const container=document.createElement('div');container.className=containerClass;
+    headings[0].before(container);
+    headings.forEach((heading,index)=>{const card=document.createElement('article');card.className=className;container.append(card);let node=heading;const nextHeading=headings[index+1];while(node&&node!==nextHeading){const next=node.nextElementSibling;card.append(node);node=next;}});
+  }
+  const familiar=sections.find(s=>s.querySelector('h2')?.textContent==='Знайомо?');
+  if(familiar){const ps=[...familiar.querySelectorAll(':scope > p')];for(let i=0;i<ps.length-1;i++){if(ps[i].classList.contains('em')){const card=document.createElement('article');card.className='pain-point';ps[i].before(card);card.append(ps[i],ps[i+1]);i++;}}}
+  const worlds=sections.find(s=>s.querySelector('h2')?.textContent.includes('Три світи'));if(worlds){groupByHeading(worlds,'h3','world-card','world-list');worlds.querySelectorAll('.world-card').forEach((card,i)=>card.classList.add(['world-card--inner','world-card--external','world-card--digital'][i]||'world-card--inner'));}
+  const outcomes=sections.find(s=>s.querySelector('h2')?.textContent.includes('Що ти отримаєш'));if(outcomes)groupByHeading(outcomes,'h3','deliverable-card','deliverable-list');
+  const process=sections.find(s=>s.querySelector('h2')?.textContent==='Як ми працюємо');if(process)groupByHeading(process,'h3','process-card','process-list');
+  const offers=sections.find(s=>s.querySelector('h2')?.textContent==='Обери формат');if(offers){groupByHeading(offers,'h3','format-card','format-list');const ids=['consultation','strategy','mentorship'];offers.querySelectorAll('.format-card').forEach((card,i)=>{card.id=ids[i]||`format-${i+1}`;const cta=card.querySelector('.button');if(cta){cta.href=`#${card.id}`;cta.textContent=['Обрати консультацію','Обрати стратегію','Обговорити менторство'][i]||'Обрати формат';}});document.querySelectorAll('.button').forEach(cta=>{if(cta.closest('.format-card'))return;if(cta.textContent.includes('консультац'))cta.href='#consultation';else if(cta.textContent.includes('стратегію'))cta.href='#strategy';else if(cta.textContent.includes('менторство'))cta.href='#mentorship';});}
+  const faq=sections.find(s=>s.querySelector('h2')?.textContent==='Часті запитання');if(faq){[...faq.querySelectorAll(':scope > h3')].forEach(h=>{const answer=h.nextElementSibling;if(!answer||answer.tagName!=='P')return;const item=document.createElement('details');item.className='faq-item';const q=document.createElement('summary');q.textContent=h.textContent;h.before(item);item.append(q,answer);h.remove();});}
+</script>
+<script>
+  const proseSections=[...document.querySelectorAll('main>section')];
+  const complexity=proseSections.find(s=>s.querySelector('h2')?.textContent.includes('Тобі не потрібно'));
+  if(complexity){const lead=[...complexity.querySelectorAll(':scope > p')].find(p=>p.textContent.startsWith('Можна бути режисером'));if(lead){const mosaic=document.createElement('div');mosaic.className='roles-mosaic';lead.before(mosaic);lead.textContent.split(/(?<=\.)\s+(?=[А-ЯІЇЄҐ])/u).forEach(text=>{const item=document.createElement('div');item.className='role-note';item.textContent=text;mosaic.append(item);});lead.remove();}const ending=complexity.querySelector(':scope > p:last-of-type');if(ending)ending.classList.add('idea-ending');}
+  const recall=proseSections.find(s=>s.querySelector('h2')?.textContent.includes('Як зробити так'));
+  if(recall){const acronym=[...recall.querySelectorAll(':scope > p.em')].find(p=>p.textContent.trim()==='СЕКС');const formula=[...recall.querySelectorAll(':scope > p.em')].find(p=>p.textContent.includes('СЕНС + ЕМОЦІЯ'));
+    if(acronym&&formula){const block=document.createElement('div');block.className='memory-formula';block.setAttribute('aria-label','СЕКС: сенс, емоція, контекст; разом вони формують спогад');block.innerHTML='<div class="formula-heading"><strong>СЕКС</strong><span>чотири частини<br>однієї формули пам’яті</span></div><div class="formula-flow"><div class="formula-term"><b>С</b><span>СЕНС</span></div><div class="formula-op">+</div><div class="formula-term"><b>Е</b><span>ЕМОЦІЯ</span></div><div class="formula-op">+</div><div class="formula-term"><b>К</b><span>КОНТЕКСТ</span></div><div class="formula-op">=</div><div class="formula-term memory"><b>С</b><span>СПОГАДИ</span></div></div>';acronym.before(block);acronym.remove();formula.remove();}
+  }
+  const people=proseSections.find(s=>s.querySelector('h2')?.textContent.includes('Усе приходить'));
+  if(people){const ps=[...people.querySelectorAll(':scope > p')];const quote=ps.find(p=>p.textContent.startsWith('Твоє CV'));if(quote)quote.classList.add('people-proof');const turn=ps.find(p=>p.textContent==='Але з чого почати цю історію?');if(turn)turn.classList.add('people-turn');const flowStart=ps.find(p=>p.textContent.startsWith('Можливо, ти колись організував'));if(flowStart){const flow=document.createElement('div');flow.className='story-flow';flowStart.before(flow);let n=flowStart;while(n){const next=n.nextElementSibling;flow.append(n);if(n.textContent.startsWith('Самопрезентація допомагає перетворити минуле')){n.classList.add('idea-ending');break;}n=next;}}}
+  const closing=proseSections.find(s=>s.querySelector('h2')?.textContent==='Фінал');const last=closing&&[...closing.querySelectorAll(':scope > p')].find(p=>p.textContent.startsWith('Питання в тому'));if(last)last.classList.add('final-line');
+</script>
+<script>
+  document.querySelectorAll('main.page > section').forEach(section=>{
+    if(section.querySelector(':scope > .section-head'))return;
+    const children=[...section.children];
+    const head=document.createElement('div');head.className='section-head';
+    const body=document.createElement('div');body.className='section-body';
+    section.append(head,body);
+    children.forEach(el=>{if(el.matches('.kicker,h2'))head.append(el);else body.append(el);});
+  });
+</script>
+<script>
+(()=>{
+const R=matchMedia('(prefers-reduced-motion:reduce)').matches;
+const c=document.createElement('canvas');c.className='sky';c.setAttribute('aria-hidden','true');document.body.prepend(c);
+const x=c.getContext('2d');let w=0,h=0,S=[],P={x:0,y:0,on:0},M={x:0,y:0},t=0,last=0;
+const rnd=(a,b)=>a+Math.random()*(b-a),LINK=125,REACH=190;
+function fit(){if(Math.abs(innerWidth-w)<2&&S.length)return;const d=Math.min(devicePixelRatio||1,2);w=innerWidth;h=innerHeight;c.width=w*d;c.height=h*d;x.setTransform(d,0,0,d,0,0);
+  S=Array.from({length:Math.min(110,Math.round(w*h/9500))},()=>({x:rnd(0,w),y:rnd(0,h),vx:rnd(-.13,.13),vy:rnd(-.13,.13),r:rnd(.5,1.5)}));M.x=w*.7;M.y=h*.3;frame(0)}
+function frame(dt){t+=dt;x.clearRect(0,0,w,h);
+  const tx=P.on?P.x:w*(.66+.12*Math.sin(t/2800)),ty=P.on?P.y:h*(.3+.12*Math.cos(t/3400));M.x+=(tx-M.x)*.07;M.y+=(ty-M.y)*.07;
+  if(!R)for(const s of S){s.x+=s.vx;s.y+=s.vy;if(s.x<0||s.x>w)s.vx*=-1;if(s.y<0||s.y>h)s.vy*=-1}
+  x.lineWidth=1;
+  for(let i=0;i<S.length;i++){const a=S[i];
+    for(let j=i+1;j<S.length;j++){const b=S[j],q=Math.hypot(a.x-b.x,a.y-b.y);if(q<LINK){x.strokeStyle='rgba(110,140,255,'+.24*(1-q/LINK)+')';x.beginPath();x.moveTo(a.x,a.y);x.lineTo(b.x,b.y);x.stroke()}}
+    const m=Math.hypot(a.x-M.x,a.y-M.y);if(m<REACH){x.strokeStyle='rgba(200,130,255,'+.55*(1-m/REACH)+')';x.beginPath();x.moveTo(a.x,a.y);x.lineTo(M.x,M.y);x.stroke()}
+    x.fillStyle='rgba(235,228,210,.65)';x.beginPath();x.arc(a.x,a.y,a.r,0,7);x.fill()}
+  const g=x.createRadialGradient(M.x,M.y,0,M.x,M.y,30);g.addColorStop(0,'rgba(195,162,90,.9)');g.addColorStop(1,'rgba(195,162,90,0)');x.fillStyle=g;x.fillRect(M.x-30,M.y-30,60,60);
+  x.fillStyle='#EBE4D2';x.beginPath();x.arc(M.x,M.y,3,0,7);x.fill()}
+function loop(ts){frame(Math.min(ts-last,64));last=ts;requestAnimationFrame(loop)}
+addEventListener('pointermove',e=>{P.x=e.clientX;P.y=e.clientY;P.on=1;if(R)frame(0)});
+document.addEventListener('pointerleave',()=>{P.on=0});
+addEventListener('resize',fit);fit();
+if(!R)requestAnimationFrame(ts=>{last=ts;loop(ts)});
+const FORM='https://forms.gle/iYk9tPobtzKGS6XFA';
+document.querySelectorAll('.button').forEach(a=>{if(/^(Обрати формат|Переглянути формати роботи)$/.test(a.textContent.trim()))return;a.href=FORM;a.target='_blank';a.rel='noopener'});
+const mfs=document.querySelector('.memory-formula .formula-heading strong');
+if(mfs){const cl=['var(--blue)','var(--green)','var(--purple)','var(--gold)'];mfs.innerHTML=[...mfs.textContent].map((ch,i)=>'<i style="color:'+(cl[i]||'inherit')+'">'+ch+'</i>').join('')}
+document.querySelectorAll('main>section').forEach(s=>{
+  const ps=[...s.querySelectorAll(':scope>.section-body>p,:scope>.section-body>.story-flow>p')].filter(p=>!p.matches('.em,.outcome-summary,.offer-logic,.idea-ending,.people-proof,.people-turn,.final-line'));
+  let lead=false;
+  ps.forEach(p=>{const n=p.textContent.trim().length;
+    if(/\?$/.test(p.textContent.trim())&&n<=150)p.classList.add('ask');
+    else if(n<=72)p.classList.add('punch');
+    else if(!lead&&p===ps[0]){p.classList.add('lead')}
+    if(p===ps[0])lead=true})});
+const hb=document.querySelector('.hero .button');
+if(hb){const f=hb.cloneNode(true);f.classList.add('float-cta');document.body.append(f);
+  const vis=new Set();const io=new IntersectionObserver(es=>{es.forEach(e=>e.isIntersecting?vis.add(e.target):vis.delete(e.target));f.classList.toggle('on',vis.size===0)});
+  const secs=document.querySelectorAll('main>section');
+  [document.querySelector('.hero'),document.getElementById('format'),secs[secs.length-1]].forEach(el=>el&&io.observe(el))}
+})();
+</script>
+</body>
+</html>
+
